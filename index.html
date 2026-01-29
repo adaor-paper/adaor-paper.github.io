@@ -140,8 +140,8 @@
 
         /* TLDR Section */
         .tldr-section {
-            margin: 30px auto;
-            padding: 20px 25px;
+            margin: 18px auto;
+            padding: 16px 22px;
             background-color: rgba(52, 152, 219, 0.1);
             border-left: 4px solid #3498db;
             border-radius: 0 8px 8px 0;
@@ -199,9 +199,9 @@
         /* Header Demo Video */
         .header-demo {
             max-width: 800px;
-            margin: 40px auto 0;
+            margin: 24px auto 0;
             background: #2c2c2c;
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 6px 25px rgba(0,0,0,0.5);
         }
@@ -271,7 +271,7 @@
         /* Abstract Section */
         .abstract-section {
             max-width: 900px;
-            margin: 60px auto;
+            margin: 32px auto;
             padding: 0 20px;
         }
 
@@ -294,7 +294,7 @@
         /* Method Section */
         .method-section {
             max-width: 1200px;
-            margin: 60px auto;
+            margin: 32px auto;
             padding: 0 20px;
         }
 
@@ -318,8 +318,8 @@
         .method-figures {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
+            gap: 24px;
+            margin: 24px 0;
         }
 
         .method-figure {
@@ -354,8 +354,8 @@
 
         .method-explanation {
             max-width: 900px;
-            margin: 30px auto;
-            padding: 20px 25px;
+            margin: 20px auto;
+            padding: 16px 22px;
             background: #2c2c2c;
             border-radius: 10px;
             font-size: 1.05em;
@@ -365,8 +365,8 @@
 
         /* Results Section */
         .results-section {
-            margin: 60px 0;
-            padding: 40px 20px;
+            margin: 30px 0;
+            padding: 24px 20px;
             background: transparent;
         }
 
@@ -386,7 +386,7 @@
         .section-description {
             text-align: center;
             max-width: 800px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 20px auto;
             color: #b0b0b0;
             font-size: 1.05em;
         }
@@ -411,6 +411,27 @@
         .carousel-slide {
             min-width: 100%;
             box-sizing: border-box;
+        }
+
+        .carousel-content.two-up .carousel-slide {
+            min-width: 50%;
+        }
+
+        #portrait-carousel.two-up .slider-demo-container {
+            padding: 20px;
+        }
+
+        #portrait-carousel.two-up .portrait-pair {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+        }
+
+        #portrait-carousel.two-up .portrait-pair-item {
+            flex: 1 1 0;
+            min-width: 0;
         }
 
         .carousel-nav {
@@ -446,7 +467,7 @@
 
         .carousel-indicators {
             text-align: center;
-            margin: 20px 0;
+            margin: 12px 0;
         }
 
         .carousel-dot {
@@ -466,8 +487,8 @@
 
         .global-alpha-control {
             max-width: 900px;
-            margin: 30px auto;
-            padding: 25px;
+            margin: 18px auto;
+            padding: 20px;
             background: #2c2c2c;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -559,8 +580,8 @@
         /* Video Gallery */
         .slider-demo-container {
             max-width: 950px;
-            margin: 0 auto 50px auto;
-            padding: 30px;
+            margin: 0 auto 28px auto;
+            padding: 20px;
         }
 
         .prompt-box {
@@ -850,7 +871,7 @@
     <!-- Header Section -->
     <header class="header">
         <div class="header-content">
-            <h1 class="title">Continuous Control of Editing Models via Adaptive-Origin Guidance</h1>
+            <h1 class="title">Continuous Control of Editing Models<br>via Adaptive-Origin Guidance</h1>
             
             <!-- Authors (commented out for anonymous submission) -->
             <!--
@@ -1488,7 +1509,7 @@
                     const folder = video.dataset.folder;
                     const isSlow = video.dataset.slow === 'true';
                     video.src = `${videoBasePath}${folder}/alpha/${alphaValue}.mp4`;
-                    label.textContent = alphaValue;
+                    label.textContent = Number(alphaValue).toFixed(2);
                     
                     // Restart both videos from the beginning
                     video.addEventListener('loadeddata', () => {
@@ -1648,7 +1669,7 @@
                 if (img && label) {
                     const folder = img.dataset.folder;
                     img.src = `${imageBasePath}${folder}/alpha/${alphaValue}.png`;
-                    label.textContent = alphaValue;
+                    label.textContent = Number(alphaValue).toFixed(2);
                 }
             },
 
@@ -1783,7 +1804,7 @@
                     const label = slide.querySelector(`.${labelClass}`);
                     item.src = `${imageBasePath}${folder}/alpha/${alphaValue}.png`;
                     if (label) {
-                        label.textContent = alphaValue;
+                        label.textContent = Number(alphaValue).toFixed(2);
                     }
                 });
             },
@@ -1825,11 +1846,15 @@
             slider: null,
             alphaDisplay: null,
             currentAlpha: 0.5,
+            visibleCount: 2,
 
             init() {
                 this.container = document.getElementById('portrait-carousel');
                 this.slider = document.getElementById('portrait-global-slider');
                 this.alphaDisplay = document.getElementById('portrait-alpha-display');
+                if (this.container) {
+                    this.container.classList.add('two-up');
+                }
                 
                 this.populateSlides();
                 this.setupNavigation();
@@ -1853,8 +1878,8 @@
                                 <div class="prompt-box">
                                     <div class="prompt-text">"${example.prompt}"</div>
                                 </div>
-                                <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                                    <div style="text-align: center;">
+                                <div class="portrait-pair">
+                                    <div class="portrait-pair-item" style="text-align: center;">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
                                         <video autoplay loop muted playsinline ${slowAttr}
                                                class="portrait-video-source-${index}"
@@ -1862,7 +1887,7 @@
                                                style="max-width: 400px; width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
                                                src="${basePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.${fileExt}"></video>
                                     </div>
-                                    <div style="text-align: center;">
+                                    <div class="portrait-pair-item" style="text-align: center;">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="portrait-alpha-label-${index}">0.50</span>)</div>
                                         <video autoplay loop muted playsinline ${slowAttr}
                                                class="portrait-edited-${index}"
@@ -1907,13 +1932,13 @@
                                 <div class="prompt-box">
                                     <div class="prompt-text">"${example.prompt}"</div>
                                 </div>
-                                <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
-                                    <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
+                                <div class="portrait-pair">
+                                    <div class="portrait-pair-item" style="text-align: center;">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
                                         <img src="${basePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.${fileExt}"
                                              style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                     </div>
-                                    <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
+                                    <div class="portrait-pair-item" style="text-align: center;">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="portrait-alpha-label-${index}">0.57</span>)</div>
                                         <img class="portrait-edited-${index}"
                                              data-folder="${encodeURIComponent(example.folder)}"
@@ -1932,12 +1957,13 @@
 
                 // Create indicators
                 const indicators = document.getElementById('portrait-indicators');
-                portraitExamples.forEach((_, index) => {
+                const totalPositions = Math.max(1, portraitExamples.length - this.visibleCount + 1);
+                for (let index = 0; index < totalPositions; index += 1) {
                     const dot = document.createElement('span');
                     dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
                     dot.onclick = () => this.goToSlide(index);
                     indicators.appendChild(dot);
-                });
+                }
             },
 
             setupNavigation() {
@@ -1962,79 +1988,88 @@
             },
 
             updateCurrent() {
-                const example = portraitExamples[currentPortraitSlide];
-                const alphaIndex = Math.round(this.currentAlpha * (example.alphaValues.length - 1));
-                const alphaValue = example.alphaValues[alphaIndex];
-                
-                const edited = document.querySelector(`.portrait-edited-${currentPortraitSlide}`);
-                const label = document.querySelector(`.portrait-alpha-label-${currentPortraitSlide}`);
-                
-                if (edited && label) {
-                    const folder = edited.dataset.folder;
-                    const isVideo = edited.dataset.type === 'video';
-                    const isSlow = edited.dataset.slow === 'true';
-                    const basePath = isVideo ? videoBasePath : imageBasePath;
-                    const fileExt = isVideo ? 'mp4' : 'png';
+                for (let offset = 0; offset < this.visibleCount; offset += 1) {
+                    const slideIndex = (currentPortraitSlide + offset) % portraitExamples.length;
+                    const example = portraitExamples[slideIndex];
+                    const alphaIndex = Math.round(this.currentAlpha * (example.alphaValues.length - 1));
+                    const alphaValue = example.alphaValues[alphaIndex];
                     
-                    if (isVideo) {
-                        const source = document.querySelector(`.portrait-video-source-${currentPortraitSlide}`);
-                        edited.src = `${basePath}${folder}/alpha/${alphaValue}.${fileExt}`;
-                        label.textContent = alphaValue;
+                    const edited = document.querySelector(`.portrait-edited-${slideIndex}`);
+                    const label = document.querySelector(`.portrait-alpha-label-${slideIndex}`);
+                    
+                    if (edited && label) {
+                        const folder = edited.dataset.folder;
+                        const isVideo = edited.dataset.type === 'video';
+                        const isSlow = edited.dataset.slow === 'true';
+                        const basePath = isVideo ? videoBasePath : imageBasePath;
+                        const fileExt = isVideo ? 'mp4' : 'png';
                         
-                        edited.addEventListener('loadeddata', () => {
-                            if (isSlow) {
-                                edited.playbackRate = 0.333;
-                            }
-                            edited.currentTime = 0;
-                            edited.play();
+                        if (isVideo) {
+                            const source = document.querySelector(`.portrait-video-source-${slideIndex}`);
+                            edited.src = `${basePath}${folder}/alpha/${alphaValue}.${fileExt}`;
+                            label.textContent = Number(alphaValue).toFixed(2);
                             
-                            if (source) {
+                            edited.addEventListener('loadeddata', () => {
                                 if (isSlow) {
-                                    source.playbackRate = 0.333;
+                                    edited.playbackRate = 0.333;
                                 }
-                                source.currentTime = 0;
-                                source.play();
-                            }
-                        }, { once: true });
-                    } else {
-                        edited.src = `${basePath}${folder}/alpha/${alphaValue}.${fileExt}`;
-                        label.textContent = alphaValue;
+                                edited.currentTime = 0;
+                                edited.play();
+                                
+                                if (source) {
+                                    if (isSlow) {
+                                        source.playbackRate = 0.333;
+                                    }
+                                    source.currentTime = 0;
+                                    source.play();
+                                }
+                            }, { once: true });
+                        } else {
+                            edited.src = `${basePath}${folder}/alpha/${alphaValue}.${fileExt}`;
+                            label.textContent = Number(alphaValue).toFixed(2);
+                        }
                     }
                 }
             },
 
             goToSlide(index) {
-                currentPortraitSlide = index;
-                this.container.style.transform = `translateX(-${index * 100}%)`;
+                const totalPositions = Math.max(1, portraitExamples.length - this.visibleCount + 1);
+                currentPortraitSlide = ((index % totalPositions) + totalPositions) % totalPositions;
+                this.container.style.transform = `translateX(-${currentPortraitSlide * (100 / this.visibleCount)}%)`;
                 
                 document.querySelectorAll('#portrait-indicators .carousel-dot').forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
+                    dot.classList.toggle('active', i === currentPortraitSlide);
                 });
 
-                const currentSlide = this.container.children[index];
-                const example = portraitExamples[index];
-                
-                if (currentSlide && example.type === 'video') {
-                    const isSlow = example.slowPlayback || false;
-                    const videos = currentSlide.querySelectorAll('video');
-                    videos.forEach(v => {
-                        if (isSlow) {
-                            v.playbackRate = 0.333;
-                        }
-                        v.currentTime = 0;
-                        v.play();
-                    });
+                for (let offset = 0; offset < this.visibleCount; offset += 1) {
+                    const slideIndex = (currentPortraitSlide + offset) % portraitExamples.length;
+                    const currentSlide = this.container.children[slideIndex];
+                    const example = portraitExamples[slideIndex];
+
+                    if (currentSlide && example.type === 'video') {
+                        const isSlow = example.slowPlayback || false;
+                        const videos = currentSlide.querySelectorAll('video');
+                        videos.forEach(v => {
+                            if (isSlow) {
+                                v.playbackRate = 0.333;
+                            }
+                            v.currentTime = 0;
+                            v.play();
+                        });
+                    }
                 }
 
                 this.updateCurrent();
             },
 
             nextSlide() {
-                this.goToSlide((currentPortraitSlide + 1) % portraitExamples.length);
+                const totalPositions = Math.max(1, portraitExamples.length - this.visibleCount + 1);
+                this.goToSlide((currentPortraitSlide + 1) % totalPositions);
             },
 
             prevSlide() {
-                this.goToSlide((currentPortraitSlide - 1 + portraitExamples.length) % portraitExamples.length);
+                const totalPositions = Math.max(1, portraitExamples.length - this.visibleCount + 1);
+                this.goToSlide((currentPortraitSlide - 1 + totalPositions) % totalPositions);
             },
 
             setAlpha(value) {
