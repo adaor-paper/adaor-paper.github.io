@@ -170,9 +170,20 @@
 
         /* Abstract Section */
         .abstract-section {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 60px auto;
             padding: 0 20px;
+        }
+
+        .abstract-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .abstract-text-container {
+            flex: 1;
         }
 
         .abstract-section h2 {
@@ -189,6 +200,40 @@
             line-height: 1.8;
             text-align: justify;
             color: #333;
+        }
+
+        .abstract-video-container {
+            position: sticky;
+            top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .abstract-video-container video {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .abstract-video-caption {
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+            font-style: italic;
+        }
+
+        @media (max-width: 968px) {
+            .abstract-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .abstract-video-container {
+                position: relative;
+                max-width: 400px;
+                margin: 20px auto;
+            }
         }
 
         /* Method Section */
@@ -624,15 +669,27 @@
         <!-- Abstract Section -->
         <section class="abstract-section">
             <h2>Abstract</h2>
-            <p class="abstract-text">
-                Diffusion-based editing models have emerged as a powerful tool for semantic image and video manipulation. However, existing models lack a mechanism for smoothly controlling the intensity of text-guided edits. In standard text-conditioned generation, Classifier-Free Guidance (CFG) impacts prompt adherence, suggesting it as a potential control for edit intensity in editing models. However, we show that scaling CFG in these models does not produce a smooth transition between the input and the edited result.
-            </p>
-            <p class="abstract-text" style="margin-top: 15px;">
-                We attribute this behavior to the unconditional prediction, which serves as the guidance origin and dominates the generation at low guidance scales, while representing an arbitrary manipulation of the input content. To enable continuous control, we introduce <strong>Adaptive-Origin Guidance (AdaOr)</strong>, a method that adjusts this standard guidance origin with an identity-conditioned adaptive origin, using an identity instruction corresponding to the identity manipulation.
-            </p>
-            <p class="abstract-text" style="margin-top: 15px;">
-                By interpolating this identity prediction with the standard unconditional prediction according to the edit strength, we ensure a continuous transition from the input to the edited result. We evaluate our method on image and video editing tasks, demonstrating that it provides smoother and more consistent control compared to current slider-based editing approaches. Our method incorporates an identity instruction into the standard training framework, enabling fine-grained control at inference time without per-edit procedure or reliance on specialized datasets.
-            </p>
+            <div class="abstract-content">
+                <div class="abstract-text-container">
+                    <p class="abstract-text">
+                        Diffusion-based editing models have emerged as a powerful tool for semantic image and video manipulation. However, existing models lack a mechanism for smoothly controlling the intensity of text-guided edits. In standard text-conditioned generation, Classifier-Free Guidance (CFG) impacts prompt adherence, suggesting it as a potential control for edit intensity in editing models. However, we show that scaling CFG in these models does not produce a smooth transition between the input and the edited result.
+                    </p>
+                    <p class="abstract-text" style="margin-top: 15px;">
+                        We attribute this behavior to the unconditional prediction, which serves as the guidance origin and dominates the generation at low guidance scales, while representing an arbitrary manipulation of the input content. To enable continuous control, we introduce <strong>Adaptive-Origin Guidance (AdaOr)</strong>, a method that adjusts this standard guidance origin with an identity-conditioned adaptive origin, using an identity instruction corresponding to the identity manipulation.
+                    </p>
+                    <p class="abstract-text" style="margin-top: 15px;">
+                        By interpolating this identity prediction with the standard unconditional prediction according to the edit strength, we ensure a continuous transition from the input to the edited result. We evaluate our method on image and video editing tasks, demonstrating that it provides smoother and more consistent control compared to current slider-based editing approaches. Our method incorporates an identity instruction into the standard training framework, enabling fine-grained control at inference time without per-edit procedure or reliance on specialized datasets.
+                    </p>
+                </div>
+                <div class="abstract-video-container">
+                    <video autoplay loop muted playsinline>
+                        <source src="assets/videos/bunny_to_chocolate_480_832_32/transient_output.mp4" type="video/mp4">
+                    </video>
+                    <div class="abstract-video-caption">
+                        Continuous edit strength control: transforming a white bunny to chocolate with smooth α transitions from 0 (original) to 1 (full edit)
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Method Section -->
