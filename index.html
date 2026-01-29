@@ -473,6 +473,37 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
+        .floating-alpha-control {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
+            transform: translate(-50%, 10px);
+            width: min(900px, calc(100% - 40px));
+            padding: 16px 20px;
+            background: rgba(44, 44, 44, 0.95);
+            border: 1px solid rgba(52, 152, 219, 0.35);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            z-index: 2000;
+            backdrop-filter: blur(6px);
+        }
+
+        .floating-alpha-control.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, 0);
+        }
+
+        .floating-alpha-control h3 {
+            text-align: center;
+            color: #3498db;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+
         .global-alpha-control h3 {
             text-align: center;
             color: #3498db;
@@ -538,6 +569,17 @@
             padding: 15px 20px;
             margin: 15px 0;
             border-radius: 0 8px 8px 0;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            background: linear-gradient(180deg, #2f2f2f 0%, #262626 100%);
+            border: 1px solid rgba(52, 152, 219, 0.25);
+        }
+
+        .prompt-text {
+            color: #e6e6e6;
+            font-size: 1.05em;
+            font-style: italic;
+            letter-spacing: 0.2px;
         }
 
         .prompt-label {
@@ -947,9 +989,6 @@
     <section class="results-section">
         <div class="container">
             <h2>Video Editing Results</h2>
-            <p class="section-description">
-                Use the arrows to navigate between examples. Adjust the slider to control edit intensity across all videos.
-            </p>
 
             <div class="carousel-container">
                 <div class="carousel-wrapper">
@@ -961,18 +1000,6 @@
                 </div>
                 <div class="carousel-indicators" id="video-indicators"></div>
             </div>
-
-            <div class="global-alpha-control">
-                <h3>Global Edit Intensity Control</h3>
-                <div class="global-slider-container">
-                    <span>α = 0.00</span>
-                    <input type="range" class="global-slider" id="video-global-slider" min="0" max="100" value="50">
-                    <span>α = 1.00</span>
-                </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span class="global-alpha-display" id="video-alpha-display">α = 0.50</span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -980,9 +1007,6 @@
     <section class="results-section">
         <div class="container">
             <h2>Image Editing Results</h2>
-            <p class="section-description">
-                Use the arrows to navigate between examples. Adjust the slider to control edit intensity.
-            </p>
 
             <div class="carousel-container">
                 <div class="carousel-wrapper">
@@ -994,18 +1018,6 @@
                 </div>
                 <div class="carousel-indicators" id="image-indicators"></div>
             </div>
-
-            <div class="global-alpha-control">
-                <h3>Global Edit Intensity Control</h3>
-                <div class="global-slider-container">
-                    <span>α = 0.00</span>
-                    <input type="range" class="global-slider" id="image-global-slider" min="0" max="100" value="50">
-                    <span>α = 1.00</span>
-                </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span class="global-alpha-display" id="image-alpha-display">α = 0.50</span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -1013,9 +1025,6 @@
     <section class="results-section">
         <div class="container">
             <h2>Shared Reference Image Results</h2>
-            <p class="section-description">
-                Examples that share the same reference image. Adjust the slider to control edit intensity.
-            </p>
 
             <div class="carousel-container">
                 <div class="carousel-wrapper">
@@ -1027,18 +1036,6 @@
                 </div>
                 <div class="carousel-indicators" id="reference-indicators"></div>
             </div>
-
-            <div class="global-alpha-control">
-                <h3>Global Edit Intensity Control</h3>
-                <div class="global-slider-container">
-                    <span>α = 0.00</span>
-                    <input type="range" class="global-slider" id="reference-global-slider" min="0" max="100" value="50">
-                    <span>α = 1.00</span>
-                </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span class="global-alpha-display" id="reference-alpha-display">α = 0.50</span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -1046,9 +1043,6 @@
     <section class="results-section">
         <div class="container">
             <h2>Additional Results - Portrait Format</h2>
-            <p class="section-description">
-                Examples with different aspect ratios. Use the arrows to navigate and adjust the slider to control edit intensity.
-            </p>
 
             <div class="carousel-container">
                 <div class="carousel-wrapper">
@@ -1060,20 +1054,20 @@
                 </div>
                 <div class="carousel-indicators" id="portrait-indicators"></div>
             </div>
-
-            <div class="global-alpha-control">
-                <h3>Global Edit Intensity Control</h3>
-                <div class="global-slider-container">
-                    <span>α = 0.00</span>
-                    <input type="range" class="global-slider" id="portrait-global-slider" min="0" max="100" value="50">
-                    <span>α = 1.00</span>
-                </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span class="global-alpha-display" id="portrait-alpha-display">α = 0.50</span>
-                </div>
-            </div>
         </div>
     </section>
+
+    <div class="floating-alpha-control" id="floating-alpha-control" aria-hidden="true">
+        <h3>Global Edit Intensity Control</h3>
+        <div class="global-slider-container">
+            <span>α = 0.00</span>
+            <input type="range" class="global-slider" id="floating-alpha-slider" min="0" max="100" value="50">
+            <span>α = 1.00</span>
+        </div>
+        <div style="text-align: center; margin-top: 10px;">
+            <span class="global-alpha-display" id="floating-alpha-display">α = 0.50</span>
+        </div>
+    </div>
 
     <!-- Citation Footer (commented out for anonymous submission) -->
     <!--
@@ -1308,6 +1302,66 @@
             imageCarousel.setAlpha(value);
             referenceCarousel.setAlpha(value);
             portraitCarousel.setAlpha(value);
+            updateFloatingAlpha(value);
+        }
+
+        function updateFloatingAlpha(value) {
+            const slider = document.getElementById('floating-alpha-slider');
+            const display = document.getElementById('floating-alpha-display');
+            if (!slider || !display) return;
+            slider.value = Math.round(value * 100);
+            display.textContent = `α = ${value.toFixed(2)}`;
+            slider.style.background = `linear-gradient(to right, #3498db 0%, #3498db ${slider.value}%, #e0e0e0 ${slider.value}%, #e0e0e0 100%)`;
+        }
+
+        function setupFloatingAlpha() {
+            const floating = document.getElementById('floating-alpha-control');
+            const slider = document.getElementById('floating-alpha-slider');
+            if (!floating || !slider) return;
+
+            slider.addEventListener('input', (e) => {
+                const value = e.target.value / 100;
+                setGlobalAlpha(value);
+            });
+
+            const resultsSections = Array.from(document.querySelectorAll('.results-section'));
+            if (resultsSections.length) {
+                let bounds = { top: 0, bottom: 0 };
+
+                const computeBounds = () => {
+                    const first = resultsSections[0];
+                    const last = resultsSections[resultsSections.length - 1];
+                    const firstRect = first.getBoundingClientRect();
+                    const lastRect = last.getBoundingClientRect();
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    bounds = {
+                        top: firstRect.top + scrollY,
+                        bottom: lastRect.bottom + scrollY
+                    };
+                };
+
+                const updateVisibility = () => {
+                    computeBounds();
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const viewportBottom = scrollY + window.innerHeight;
+                    const isVisible = viewportBottom >= bounds.top && scrollY <= bounds.bottom;
+                    floating.classList.toggle('visible', isVisible);
+                    floating.setAttribute('aria-hidden', String(!isVisible));
+                };
+
+                computeBounds();
+                updateVisibility();
+
+                window.addEventListener('scroll', () => {
+                    window.requestAnimationFrame(updateVisibility);
+                });
+                window.addEventListener('resize', () => {
+                    updateVisibility();
+                });
+                window.addEventListener('load', updateVisibility);
+            }
+
+            updateFloatingAlpha(globalAlpha);
         }
 
         // Video Carousel
@@ -1338,7 +1392,7 @@
                     slide.innerHTML = `
                         <div class="slider-demo-container">
                             <div class="prompt-box">
-                                <div style="color: #d0d0d0;">"${example.prompt}"</div>
+                                <div class="prompt-text">"${example.prompt}"</div>
                             </div>
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
                                 <div style="text-align: center;">
@@ -1406,6 +1460,10 @@
             },
 
             setupGlobalSlider() {
+                if (!this.slider) {
+                    this.setAlpha(globalAlpha);
+                    return;
+                }
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
                     setGlobalAlpha(value);
@@ -1525,7 +1583,7 @@
                     slide.innerHTML = `
                         <div class="slider-demo-container">
                             <div class="prompt-box">
-                                <div style="color: #d0d0d0;">"${example.prompt}"</div>
+                                <div class="prompt-text">"${example.prompt}"</div>
                             </div>
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
                                 <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
@@ -1564,6 +1622,10 @@
             },
 
             setupGlobalSlider() {
+                if (!this.slider) {
+                    this.setAlpha(globalAlpha);
+                    return;
+                }
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
                     setGlobalAlpha(value);
@@ -1646,7 +1708,7 @@
 
                     const editsHtml = group.edits.map((edit, editIndex) => `
                         <div style="text-align: center; flex: 1; min-width: 240px; max-width: 320px;">
-                            <div style="color: #d0d0d0; font-size: 0.9em; margin-bottom: 8px;">"${edit.prompt}"</div>
+                            <div class="prompt-text" style="margin-bottom: 8px;">"${edit.prompt}"</div>
                             <img class="reference-edited-${groupIndex}-${editIndex}"
                                  data-reference-edit="true"
                                  data-folder="${encodeURIComponent(edit.folder)}"
@@ -1659,9 +1721,6 @@
 
                     slide.innerHTML = `
                         <div class="slider-demo-container">
-                            <div class="prompt-box">
-                                <div style="color: #d0d0d0;">${group.description}</div>
-                            </div>
                             <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
                                 <div style="text-align: center; width: 100%; max-width: 420px;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
@@ -1693,6 +1752,10 @@
             },
 
             setupGlobalSlider() {
+                if (!this.slider) {
+                    this.setAlpha(globalAlpha);
+                    return;
+                }
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
                     setGlobalAlpha(value);
@@ -1788,7 +1851,7 @@
                         slide.innerHTML = `
                             <div class="slider-demo-container">
                                 <div class="prompt-box">
-                                    <div style="color: #d0d0d0;">"${example.prompt}"</div>
+                                    <div class="prompt-text">"${example.prompt}"</div>
                                 </div>
                                 <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
                                     <div style="text-align: center;">
@@ -1842,7 +1905,7 @@
                         slide.innerHTML = `
                             <div class="slider-demo-container">
                                 <div class="prompt-box">
-                                    <div style="color: #d0d0d0;">"${example.prompt}"</div>
+                                    <div class="prompt-text">"${example.prompt}"</div>
                                 </div>
                                 <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
                                     <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
@@ -1883,6 +1946,10 @@
             },
 
             setupGlobalSlider() {
+                if (!this.slider) {
+                    this.setAlpha(globalAlpha);
+                    return;
+                }
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
                     setGlobalAlpha(value);
@@ -2093,6 +2160,7 @@
             imageCarousel.init();
             referenceCarousel.init();
             portraitCarousel.init();
+            setupFloatingAlpha();
             setGlobalAlpha(globalAlpha);
             setupVideoModal();
         });
