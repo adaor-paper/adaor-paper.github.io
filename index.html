@@ -1066,13 +1066,13 @@
                 alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
                 slowPlayback: true
             },
-            {
-                folder: "frozen_cherry",
-                title: "Frozen Cherry",
-                prompt: "Add a frozen layer over the cherry, as if lightly frosted",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
-                slowPlayback: true
-            }
+            // {
+            //     folder: "frozen_cherry",
+            //     title: "Frozen Cherry",
+            //     prompt: "Add a frozen layer over the cherry, as if lightly frosted",
+            //     alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+            //     slowPlayback: true
+            // }
         ];
 
         // Image examples
@@ -1265,6 +1265,7 @@
                 const alphaValue = example.alphaValues[alphaIndex];
                 
                 const video = document.querySelector(`.video-edited-${currentVideoSlide}`);
+                const sourceVideo = document.querySelector(`.carousel-slide:nth-child(${currentVideoSlide + 1}) video:first-of-type`);
                 const label = document.querySelector(`.video-alpha-label-${currentVideoSlide}`);
                 
                 if (video && label) {
@@ -1273,11 +1274,20 @@
                     video.src = `${videoBasePath}${folder}/alpha/${alphaValue}.mp4`;
                     label.textContent = alphaValue;
                     
-                    if (isSlow) {
-                        video.addEventListener('loadeddata', () => {
+                    // Restart both videos from the beginning
+                    video.addEventListener('loadeddata', () => {
+                        if (isSlow) {
                             video.playbackRate = 0.333;
-                        }, { once: true });
-                    }
+                        }
+                        video.currentTime = 0;
+                        video.play();
+                        
+                        // Also restart the source video
+                        if (sourceVideo) {
+                            sourceVideo.currentTime = 0;
+                            sourceVideo.play();
+                        }
+                    }, { once: true });
                 }
             },
 
@@ -1289,6 +1299,16 @@
                 document.querySelectorAll('#video-indicators .carousel-dot').forEach((dot, i) => {
                     dot.classList.toggle('active', i === index);
                 });
+
+                // Restart all videos in the current slide
+                const currentSlide = this.container.children[index];
+                if (currentSlide) {
+                    const videos = currentSlide.querySelectorAll('video');
+                    videos.forEach(v => {
+                        v.currentTime = 0;
+                        v.play();
+                    });
+                }
 
                 this.updateCurrentVideo();
             },
