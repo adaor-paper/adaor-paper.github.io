@@ -168,22 +168,83 @@
             margin-right: 8px;
         }
 
+        /* Header Demo Video */
+        .header-demo {
+            max-width: 800px;
+            margin: 40px auto 0;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+
+        .header-demo-video {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .header-demo-controls {
+            margin-top: 20px;
+        }
+
+        .header-demo-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #e0e0e0 0%, #3498db 0%);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .header-demo-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .header-demo-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .header-demo-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .header-demo-caption {
+            text-align: center;
+            color: #555;
+            font-size: 1em;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .alpha-value {
+            font-weight: bold;
+            color: #3498db;
+        }
+
         /* Abstract Section */
         .abstract-section {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 60px auto;
             padding: 0 20px;
-        }
-
-        .abstract-content {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 40px;
-            align-items: start;
-        }
-
-        .abstract-text-container {
-            flex: 1;
         }
 
         .abstract-section h2 {
@@ -200,40 +261,6 @@
             line-height: 1.8;
             text-align: justify;
             color: #333;
-        }
-
-        .abstract-video-container {
-            position: sticky;
-            top: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .abstract-video-container video {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .abstract-video-caption {
-            font-size: 0.9em;
-            color: #666;
-            text-align: center;
-            font-style: italic;
-        }
-
-        @media (max-width: 968px) {
-            .abstract-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .abstract-video-container {
-                position: relative;
-                max-width: 400px;
-                margin: 20px auto;
-            }
         }
 
         /* Method Section */
@@ -639,20 +666,10 @@
                 <span class="header-affiliation"><sup>2</sup>Decart.ai</span>
             </div>
 
-            <!-- TL;DR -->
-            <div class="tldr-section">
-                <div class="tldr-title">TL;DR</div>
-                <div class="tldr-content">
-                    We introduce <span class="highlight-text">Adaptive-Origin Guidance (AdaOr)</span>, enabling smooth and continuous control over edit intensity in diffusion-based image and video editing models without requiring per-edit optimization or specialized datasets.
-                </div>
-            </div>
+            
 
             <!-- Links -->
             <div class="links">
-                <a href="#" class="link-btn">
-                    <span class="icon">📄</span>
-                    <span>Paper</span>
-                </a>
                 <a href="#" class="link-btn">
                     <span class="icon">📚</span>
                     <span>arXiv</span>
@@ -662,6 +679,32 @@
                     <span>Code</span>
                 </a>
             </div>
+
+            <!-- Interactive Demo -->
+            <div class="header-demo">
+                <video id="header-demo-video" class="header-demo-video" muted playsinline>
+                    <source src="assets/videos/bunny_to_chocolate_480_832_32/transient_output.mp4" type="video/mp4">
+                </video>
+                <div class="header-demo-controls">
+                    <input type="range" id="header-demo-slider" class="header-demo-slider" min="0" max="100" value="0">
+                    <div class="header-demo-labels">
+                        <span>α = 0.00 (Original)</span>
+                        <span class="alpha-value" id="alpha-display">α = 0.00</span>
+                        <span>α = 1.00 (Full Edit)</span>
+                    </div>
+                </div>
+                <div class="header-demo-caption">
+                    "Replace the white bunny with a chocolate bunny made of brown chocolate"
+                </div>
+            </div>
+
+            <!-- TL;DR -->
+            <div class="tldr-section">
+                <div class="tldr-title">TL;DR</div>
+                <div class="tldr-content">
+                    We introduce <span class="highlight-text">Adaptive-Origin Guidance (AdaOr)</span>, enabling smooth and continuous control over edit intensity in diffusion-based image and video editing models without requiring per-edit optimization or specialized datasets.
+                </div>
+            </div>
         </div>
     </header>
 
@@ -669,27 +712,15 @@
         <!-- Abstract Section -->
         <section class="abstract-section">
             <h2>Abstract</h2>
-            <div class="abstract-content">
-                <div class="abstract-text-container">
-                    <p class="abstract-text">
-                        Diffusion-based editing models have emerged as a powerful tool for semantic image and video manipulation. However, existing models lack a mechanism for smoothly controlling the intensity of text-guided edits. In standard text-conditioned generation, Classifier-Free Guidance (CFG) impacts prompt adherence, suggesting it as a potential control for edit intensity in editing models. However, we show that scaling CFG in these models does not produce a smooth transition between the input and the edited result.
-                    </p>
-                    <p class="abstract-text" style="margin-top: 15px;">
-                        We attribute this behavior to the unconditional prediction, which serves as the guidance origin and dominates the generation at low guidance scales, while representing an arbitrary manipulation of the input content. To enable continuous control, we introduce <strong>Adaptive-Origin Guidance (AdaOr)</strong>, a method that adjusts this standard guidance origin with an identity-conditioned adaptive origin, using an identity instruction corresponding to the identity manipulation.
-                    </p>
-                    <p class="abstract-text" style="margin-top: 15px;">
-                        By interpolating this identity prediction with the standard unconditional prediction according to the edit strength, we ensure a continuous transition from the input to the edited result. We evaluate our method on image and video editing tasks, demonstrating that it provides smoother and more consistent control compared to current slider-based editing approaches. Our method incorporates an identity instruction into the standard training framework, enabling fine-grained control at inference time without per-edit procedure or reliance on specialized datasets.
-                    </p>
-                </div>
-                <div class="abstract-video-container">
-                    <video autoplay loop muted playsinline>
-                        <source src="assets/videos/bunny_to_chocolate_480_832_32/transient_output.mp4" type="video/mp4">
-                    </video>
-                    <div class="abstract-video-caption">
-                        Continuous edit strength control: transforming a white bunny to chocolate with smooth α transitions from 0 (original) to 1 (full edit)
-                    </div>
-                </div>
-            </div>
+            <p class="abstract-text">
+                Diffusion-based editing models have emerged as a powerful tool for semantic image and video manipulation. However, existing models lack a mechanism for smoothly controlling the intensity of text-guided edits. In standard text-conditioned generation, Classifier-Free Guidance (CFG) impacts prompt adherence, suggesting it as a potential control for edit intensity in editing models. However, we show that scaling CFG in these models does not produce a smooth transition between the input and the edited result.
+            </p>
+            <p class="abstract-text" style="margin-top: 15px;">
+                We attribute this behavior to the unconditional prediction, which serves as the guidance origin and dominates the generation at low guidance scales, while representing an arbitrary manipulation of the input content. To enable continuous control, we introduce <strong>Adaptive-Origin Guidance (AdaOr)</strong>, a method that adjusts this standard guidance origin with an identity-conditioned adaptive origin, using an identity instruction corresponding to the identity manipulation.
+            </p>
+            <p class="abstract-text" style="margin-top: 15px;">
+                By interpolating this identity prediction with the standard unconditional prediction according to the edit strength, we ensure a continuous transition from the input to the edited result. We evaluate our method on image and video editing tasks, demonstrating that it provides smoother and more consistent control compared to current slider-based editing approaches. Our method incorporates an identity instruction into the standard training framework, enabling fine-grained control at inference time without per-edit procedure or reliance on specialized datasets.
+            </p>
         </section>
 
         <!-- Method Section -->
@@ -1212,8 +1243,57 @@
             });
         }
 
+        // Header Demo Video Slider Sync
+        function setupHeaderDemo() {
+            const video = document.getElementById('header-demo-video');
+            const slider = document.getElementById('header-demo-slider');
+            const alphaDisplay = document.getElementById('alpha-display');
+
+            if (!video || !slider) return;
+
+            // Update slider background gradient
+            function updateSliderBackground(value) {
+                const percentage = value;
+                slider.style.background = `linear-gradient(to right, #3498db 0%, #3498db ${percentage}%, #e0e0e0 ${percentage}%, #e0e0e0 100%)`;
+            }
+
+            // Slider input - seek video and update display
+            slider.addEventListener('input', function() {
+                const percentage = this.value;
+                const duration = video.duration;
+                
+                if (duration && !isNaN(duration)) {
+                    video.currentTime = (percentage / 100) * duration;
+                    const alpha = (percentage / 100).toFixed(2);
+                    alphaDisplay.textContent = `α = ${alpha}`;
+                    updateSliderBackground(percentage);
+                }
+            });
+
+            // Video timeupdate - update slider position
+            video.addEventListener('timeupdate', function() {
+                if (!slider.matches(':active')) { // Don't update if user is dragging
+                    const percentage = (video.currentTime / video.duration) * 100;
+                    slider.value = percentage;
+                    const alpha = (percentage / 100).toFixed(2);
+                    alphaDisplay.textContent = `α = ${alpha}`;
+                    updateSliderBackground(percentage);
+                }
+            });
+
+            // Start playing when loaded
+            video.addEventListener('loadeddata', function() {
+                video.play();
+                updateSliderBackground(0);
+            });
+
+            // Loop the video
+            video.loop = true;
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            setupHeaderDemo();
             populateInteractiveDemos();
             populateOtherVideos();
             populateImageDemos();
