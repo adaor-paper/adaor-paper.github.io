@@ -363,16 +363,145 @@
             font-size: 1.05em;
         }
 
+        /* Carousel Navigation */
+        .carousel-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .carousel-wrapper {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-content {
+            display: flex;
+            transition: transform 0.4s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(52, 152, 219, 0.9);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(41, 128, 185, 1);
+        }
+
+        .carousel-nav.prev {
+            left: 10px;
+        }
+
+        .carousel-nav.next {
+            right: 10px;
+        }
+
+        .carousel-indicators {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .carousel-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: #3498db;
+        }
+
+        .global-alpha-control {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .global-alpha-control h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .global-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .global-slider {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #e0e0e0 0%, #3498db 0%);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .global-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .global-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .global-alpha-display {
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.1em;
+            min-width: 80px;
+            text-align: center;
+        }
+
         /* Video Gallery */
         .slider-demo-container {
             max-width: 950px;
             margin: 0 auto 50px auto;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .slider-demo-container:last-child {
-            border-bottom: none;
+            padding: 30px;
         }
 
         .prompt-box {
@@ -782,15 +911,30 @@
         <div class="container">
             <h2>Video Editing Results</h2>
             <p class="section-description">
-                Continuous edit strength control from α=0 (original) to α=1 (full edit). Click any video to enlarge.
+                Use the arrows to navigate between examples. Adjust the slider to control edit intensity across all videos.
             </p>
 
-            <div id="interactive-demos">
-                <!-- Interactive demos will be populated here -->
+            <div class="carousel-container">
+                <div class="carousel-wrapper">
+                    <button class="carousel-nav prev" id="video-prev">‹</button>
+                    <button class="carousel-nav next" id="video-next">›</button>
+                    <div class="carousel-content" id="video-carousel">
+                        <!-- Video slides will be populated here -->
+                    </div>
+                </div>
+                <div class="carousel-indicators" id="video-indicators"></div>
             </div>
 
-            <div id="other-videos-gallery" style="margin-top: 40px;">
-                <!-- Other videos will be populated here -->
+            <div class="global-alpha-control">
+                <h3>Global Edit Intensity Control</h3>
+                <div class="global-slider-container">
+                    <span>α = 0.00</span>
+                    <input type="range" class="global-slider" id="video-global-slider" min="0" max="100" value="50">
+                    <span>α = 1.00</span>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span class="global-alpha-display" id="video-alpha-display">α = 0.50</span>
+                </div>
             </div>
         </div>
     </section>
@@ -800,11 +944,30 @@
         <div class="container">
             <h2>Image Editing Results</h2>
             <p class="section-description">
-                AdaOr also enables continuous control for image editing. Drag the slider to adjust edit intensity.
+                Use the arrows to navigate between examples. Adjust the slider to control edit intensity.
             </p>
 
-            <div class="image-grid" id="image-demos">
-                <!-- Image demos will be populated here -->
+            <div class="carousel-container">
+                <div class="carousel-wrapper">
+                    <button class="carousel-nav prev" id="image-prev">‹</button>
+                    <button class="carousel-nav next" id="image-next">›</button>
+                    <div class="carousel-content" id="image-carousel">
+                        <!-- Image slides will be populated here -->
+                    </div>
+                </div>
+                <div class="carousel-indicators" id="image-indicators"></div>
+            </div>
+
+            <div class="global-alpha-control">
+                <h3>Global Edit Intensity Control</h3>
+                <div class="global-slider-container">
+                    <span>α = 0.00</span>
+                    <input type="range" class="global-slider" id="image-global-slider" min="0" max="100" value="50">
+                    <span>α = 1.00</span>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span class="global-alpha-display" id="image-alpha-display">α = 0.50</span>
+                </div>
             </div>
         </div>
     </section>
@@ -1007,184 +1170,254 @@
         const videoBasePath = "assets/videos/";
         const imageBasePath = "assets/images/";
 
-        // Populate Interactive Demos
-        function populateInteractiveDemos() {
-            const container = document.getElementById('interactive-demos');
-            container.innerHTML = '';
+        // Combine all videos
+        const allVideos = [...interactiveVideos, ...otherVideos];
 
-            interactiveVideos.forEach((example, index) => {
-                const len = example.alphaValues.length;
-                const step = (len - 1) / 5;
-                const alphaIndices = [0, 1, 2, 3, 4, 5].map(i => Math.round(i * step));
-                const selectedAlphas = alphaIndices.map(i => example.alphaValues[i]);
+        // Video Carousel
+        let currentVideoSlide = 0;
+        const videoCarousel = {
+            container: null,
+            slider: null,
+            alphaDisplay: null,
+            currentAlpha: 0.5,
 
-                const alphaVideosHtml = selectedAlphas.map((alpha, i) => `
-                    <div class="alpha-video-item">
-                        <video autoplay loop muted playsinline preload="auto"
-                               class="sync-video-${index}"
-                               src="${videoBasePath}${encodeURIComponent(example.folder)}/alpha/${alpha}.mp4"></video>
-                        <div class="alpha-label">α = ${alpha}</div>
-                    </div>
-                `).join('');
+            init() {
+                this.container = document.getElementById('video-carousel');
+                this.slider = document.getElementById('video-global-slider');
+                this.alphaDisplay = document.getElementById('video-alpha-display');
+                
+                this.populateSlides();
+                this.setupNavigation();
+                this.setupGlobalSlider();
+            },
 
-                const demo = document.createElement('div');
-                demo.className = 'slider-demo-container';
-                demo.innerHTML = `
-                    <div class="prompt-box">
-                        <div class="prompt-label">${example.title}</div>
-                        <div>"${example.prompt}"</div>
-                    </div>
-                    <div class="alpha-videos-row">
-                        ${alphaVideosHtml}
-                    </div>
-                    <div class="transient-video-container">
-                        <video autoplay loop muted playsinline
-                               src="${videoBasePath}${encodeURIComponent(example.folder)}/transient_output.mp4"></video>
-                        <div class="transient-label">Continuous α transition (0 → 1)</div>
-                    </div>
-                `;
-                container.appendChild(demo);
+            populateSlides() {
+                allVideos.forEach((example, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'carousel-slide';
+                    
+                    const slowAttr = example.slowPlayback ? 'data-slow="true"' : '';
+                    
+                    slide.innerHTML = `
+                        <div class="slider-demo-container">
+                            <div class="prompt-box">
+                                <div class="prompt-label">${example.title}</div>
+                                <div>"${example.prompt}"</div>
+                            </div>
+                            <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                <div style="text-align: center;">
+                                    <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
+                                    <video autoplay loop muted playsinline ${slowAttr}
+                                           style="max-width: 400px; width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+                                           src="${videoBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.mp4"></video>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="video-alpha-label-${index}">0.50</span>)</div>
+                                    <video autoplay loop muted playsinline ${slowAttr}
+                                           class="video-edited-${index}"
+                                           data-folder="${encodeURIComponent(example.folder)}"
+                                           data-alphas='${JSON.stringify(example.alphaValues)}'
+                                           data-slow="${example.slowPlayback || false}"
+                                           style="max-width: 400px; width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+                                           src="${videoBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[Math.floor(example.alphaValues.length / 2)]}.mp4"></video>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    this.container.appendChild(slide);
+                });
 
-                setTimeout(() => {
-                    const videos = document.querySelectorAll(`.sync-video-${index}`);
-                    if (videos.length > 0) {
-                        const master = videos[0];
-                        master.addEventListener('play', () => {
-                            videos.forEach((v, i) => {
-                                if (i !== 0) v.currentTime = master.currentTime;
-                            });
-                        });
-                        setInterval(() => {
-                            videos.forEach((v, i) => {
-                                if (i !== 0 && Math.abs(v.currentTime - master.currentTime) > 0.3) {
-                                    v.currentTime = master.currentTime;
-                                }
-                            });
-                        }, 1000);
+                // Create indicators
+                const indicators = document.getElementById('video-indicators');
+                allVideos.forEach((_, index) => {
+                    const dot = document.createElement('span');
+                    dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+                    dot.onclick = () => this.goToSlide(index);
+                    indicators.appendChild(dot);
+                });
+            },
+
+            setupNavigation() {
+                document.getElementById('video-prev').onclick = () => this.prevSlide();
+                document.getElementById('video-next').onclick = () => this.nextSlide();
+            },
+
+            setupGlobalSlider() {
+                this.slider.addEventListener('input', (e) => {
+                    const value = e.target.value / 100;
+                    this.currentAlpha = value;
+                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    this.updateSliderBackground(e.target.value);
+                    this.updateCurrentVideo();
+                });
+
+                this.updateSliderBackground(50);
+            },
+
+            updateSliderBackground(value) {
+                this.slider.style.background = `linear-gradient(to right, #3498db 0%, #3498db ${value}%, #e0e0e0 ${value}%, #e0e0e0 100%)`;
+            },
+
+            updateCurrentVideo() {
+                const example = allVideos[currentVideoSlide];
+                const alphaIndex = Math.round(this.currentAlpha * (example.alphaValues.length - 1));
+                const alphaValue = example.alphaValues[alphaIndex];
+                
+                const video = document.querySelector(`.video-edited-${currentVideoSlide}`);
+                const label = document.querySelector(`.video-alpha-label-${currentVideoSlide}`);
+                
+                if (video && label) {
+                    const folder = video.dataset.folder;
+                    const isSlow = video.dataset.slow === 'true';
+                    video.src = `${videoBasePath}${folder}/alpha/${alphaValue}.mp4`;
+                    label.textContent = alphaValue;
+                    
+                    if (isSlow) {
+                        video.addEventListener('loadeddata', () => {
+                            video.playbackRate = 0.333;
+                        }, { once: true });
                     }
-                }, 500);
-            });
-        }
+                }
+            },
 
-        // Populate Other Videos
-        function populateOtherVideos() {
-            const gallery = document.getElementById('other-videos-gallery');
-            gallery.innerHTML = '';
+            goToSlide(index) {
+                currentVideoSlide = index;
+                this.container.style.transform = `translateX(-${index * 100}%)`;
+                
+                // Update indicators
+                document.querySelectorAll('#video-indicators .carousel-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
 
-            otherVideos.forEach((example, index) => {
-                const baseIndex = interactiveVideos.length + index;
-                const len = example.alphaValues.length;
-                const step = (len - 1) / 5;
-                const alphaIndices = [0, 1, 2, 3, 4, 5].map(i => Math.round(i * step));
-                const selectedAlphas = alphaIndices.map(i => example.alphaValues[i]);
+                this.updateCurrentVideo();
+            },
 
-                const slowAttr = example.slowPlayback ? 'data-slow="true"' : '';
-                const alphaVideosHtml = selectedAlphas.map((alpha, i) => `
-                    <div class="alpha-video-item">
-                        <video autoplay loop muted playsinline preload="auto"
-                               class="sync-video-other-${index}"
-                               ${slowAttr}
-                               src="${videoBasePath}${encodeURIComponent(example.folder)}/alpha/${alpha}.mp4"></video>
-                        <div class="alpha-label">α = ${alpha}</div>
-                    </div>
-                `).join('');
+            nextSlide() {
+                this.goToSlide((currentVideoSlide + 1) % allVideos.length);
+            },
 
-                const item = document.createElement('div');
-                item.className = 'slider-demo-container';
-                item.innerHTML = `
-                    <div class="prompt-box">
-                        <div class="prompt-label">${example.title}</div>
-                        <div>"${example.prompt}"</div>
-                    </div>
-                    <div class="alpha-videos-row">
-                        ${alphaVideosHtml}
-                    </div>
-                    <div class="transient-video-container">
-                        <video autoplay loop muted playsinline
-                               ${slowAttr}
-                               src="${videoBasePath}${encodeURIComponent(example.folder)}/transient_output.mp4"></video>
-                        <div class="transient-label">Continuous α transition (0 → 1)</div>
-                    </div>
-                `;
-                gallery.appendChild(item);
+            prevSlide() {
+                this.goToSlide((currentVideoSlide - 1 + allVideos.length) % allVideos.length);
+            }
+        };
 
-                setTimeout(() => {
-                    const videos = document.querySelectorAll(`.sync-video-other-${index}`);
-                    const transientVideo = item.querySelector('.transient-video-container video');
-                    const playbackRate = example.slowPlayback ? 0.333 : 1.0;
+        // Image Carousel
+        let currentImageSlide = 0;
+        const imageCarousel = {
+            container: null,
+            slider: null,
+            alphaDisplay: null,
+            currentAlpha: 0.5,
 
-                    if (videos.length > 0) {
-                        const master = videos[0];
-                        videos.forEach(v => { v.playbackRate = playbackRate; });
-                        if (transientVideo) transientVideo.playbackRate = playbackRate;
+            init() {
+                this.container = document.getElementById('image-carousel');
+                this.slider = document.getElementById('image-global-slider');
+                this.alphaDisplay = document.getElementById('image-alpha-display');
+                
+                this.populateSlides();
+                this.setupNavigation();
+                this.setupGlobalSlider();
+            },
 
-                        master.addEventListener('play', () => {
-                            videos.forEach((v, i) => {
-                                if (i !== 0) v.currentTime = master.currentTime;
-                            });
-                        });
-                        setInterval(() => {
-                            videos.forEach((v, i) => {
-                                if (i !== 0 && Math.abs(v.currentTime - master.currentTime) > 0.3) {
-                                    v.currentTime = master.currentTime;
-                                }
-                            });
-                        }, 1000);
-                    }
-                }, 500);
-            });
-        }
+            populateSlides() {
+                imageLandscape.forEach((example, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'carousel-slide';
+                    
+                    slide.innerHTML = `
+                        <div class="slider-demo-container">
+                            <div class="prompt-box">
+                                <div class="prompt-label">${example.title}</div>
+                                <div>"${example.prompt}"</div>
+                            </div>
+                            <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
+                                <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
+                                    <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
+                                    <img src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.png"
+                                         style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                </div>
+                                <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
+                                    <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="image-alpha-label-${index}">0.57</span>)</div>
+                                    <img class="image-edited-${index}"
+                                         data-folder="${encodeURIComponent(example.folder)}"
+                                         data-alphas='${JSON.stringify(example.alphaValues)}'
+                                         src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[Math.floor(example.alphaValues.length / 2)]}.png"
+                                         style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    this.container.appendChild(slide);
+                });
 
-        // Populate Image Demos
-        function populateImageDemos() {
-            const container = document.getElementById('image-demos');
-            container.innerHTML = '';
+                // Create indicators
+                const indicators = document.getElementById('image-indicators');
+                imageLandscape.forEach((_, index) => {
+                    const dot = document.createElement('span');
+                    dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+                    dot.onclick = () => this.goToSlide(index);
+                    indicators.appendChild(dot);
+                });
+            },
 
-            imageLandscape.forEach((example, index) => {
-                const midIndex = Math.floor(example.alphaValues.length / 2);
-                const midAlpha = example.alphaValues[midIndex];
-                const id = `img-${index}`;
+            setupNavigation() {
+                document.getElementById('image-prev').onclick = () => this.prevSlide();
+                document.getElementById('image-next').onclick = () => this.nextSlide();
+            },
 
-                const item = document.createElement('div');
-                item.className = example.portrait ? 'image-item portrait' : 'image-item';
-                item.innerHTML = `
-                    <div class="prompt-box">
-                        <div class="prompt-label">${example.title}</div>
-                        <div style="font-size: 14px;">"${example.prompt}"</div>
-                    </div>
-                    <div class="image-labels">
-                        <span>Source</span>
-                        <span>Edited (α = <span id="img-alpha-${id}">${midAlpha}</span>)</span>
-                    </div>
-                    <div class="image-pair">
-                        <img src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/0.000.png">
-                        <img id="img-edited-${id}" src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${midAlpha}.png">
-                    </div>
-                    <div class="image-slider-container">
-                        <input type="range" class="alpha-slider" id="img-slider-${id}"
-                               min="0" max="${example.alphaValues.length - 1}" value="${midIndex}"
-                               data-alphas='${JSON.stringify(example.alphaValues)}'
-                               data-folder="${encodeURIComponent(example.folder)}"
-                               data-id="${id}">
-                    </div>
-                `;
-                container.appendChild(item);
+            setupGlobalSlider() {
+                this.slider.addEventListener('input', (e) => {
+                    const value = e.target.value / 100;
+                    this.currentAlpha = value;
+                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    this.updateSliderBackground(e.target.value);
+                    this.updateCurrentImage();
+                });
 
-                setTimeout(() => {
-                    const slider = document.getElementById(`img-slider-${id}`);
-                    slider.addEventListener('input', function() {
-                        const alphas = JSON.parse(this.dataset.alphas);
-                        const alphaValue = alphas[this.value];
-                        const folder = this.dataset.folder;
-                        const itemId = this.dataset.id;
+                this.updateSliderBackground(50);
+            },
 
-                        document.getElementById(`img-alpha-${itemId}`).textContent = alphaValue;
-                        document.getElementById(`img-edited-${itemId}`).src = 
-                            `${imageBasePath}${folder}/alpha/${alphaValue}.png`;
-                    });
-                }, 100);
-            });
-        }
+            updateSliderBackground(value) {
+                this.slider.style.background = `linear-gradient(to right, #3498db 0%, #3498db ${value}%, #e0e0e0 ${value}%, #e0e0e0 100%)`;
+            },
+
+            updateCurrentImage() {
+                const example = imageLandscape[currentImageSlide];
+                const alphaIndex = Math.round(this.currentAlpha * (example.alphaValues.length - 1));
+                const alphaValue = example.alphaValues[alphaIndex];
+                
+                const img = document.querySelector(`.image-edited-${currentImageSlide}`);
+                const label = document.querySelector(`.image-alpha-label-${currentImageSlide}`);
+                
+                if (img && label) {
+                    const folder = img.dataset.folder;
+                    img.src = `${imageBasePath}${folder}/alpha/${alphaValue}.png`;
+                    label.textContent = alphaValue;
+                }
+            },
+
+            goToSlide(index) {
+                currentImageSlide = index;
+                this.container.style.transform = `translateX(-${index * 100}%)`;
+                
+                // Update indicators
+                document.querySelectorAll('#image-indicators .carousel-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+
+                this.updateCurrentImage();
+            },
+
+            nextSlide() {
+                this.goToSlide((currentImageSlide + 1) % imageLandscape.length);
+            },
+
+            prevSlide() {
+                this.goToSlide((currentImageSlide - 1 + imageLandscape.length) % imageLandscape.length);
+            }
+        };
 
         // Video Modal
         function setupVideoModal() {
@@ -1294,9 +1527,8 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             setupHeaderDemo();
-            populateInteractiveDemos();
-            populateOtherVideos();
-            populateImageDemos();
+            videoCarousel.init();
+            imageCarousel.init();
             setupVideoModal();
         });
     </script>
