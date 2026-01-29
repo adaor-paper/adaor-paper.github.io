@@ -5,12 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Continuous Control of Editing Models via Adaptive-Origin Guidance</title>
     
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Continuous Control of Editing Models via Adaptive-Origin Guidance - AdaOr enables smooth and continuous control over edit intensity in diffusion-based image and video editing without per-edit optimization or specialized datasets.">
+    <meta name="keywords" content="Continuous Control, Editing Models, Adaptive-Origin Guidance, AdaOr, diffusion models, image editing, video editing, classifier-free guidance, CFG, edit intensity control, text-guided editing, instruction-based editing">
+    <meta name="author" content="Anonymous Writers">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://adaor-paper.github.io/">
+    
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
     
+    <!-- Open Graph Meta Tags -->
     <meta property="og:site_name" content="Adaptive-Origin Guidance">
     <meta property="og:title" content="Continuous Control of Editing Models via Adaptive-Origin Guidance">
     <meta property="og:description" content="Smooth and continuous control over edit intensity in diffusion-based image and video editing">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://adaor-paper.github.io/">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Continuous Control of Editing Models via Adaptive-Origin Guidance">
+    <meta name="twitter:description" content="AdaOr enables smooth and continuous control over edit intensity in diffusion-based image and video editing">
+    
+    <!-- Additional SEO -->
+    <meta name="application-name" content="AdaOr - Adaptive-Origin Guidance">
+    <meta name="theme-color" content="#0037fe">
 
     <style>
         /* Reset and Base Styles */
@@ -1317,13 +1335,23 @@
 
         let globalAlpha = 0.5;
 
+        function applyAlphaToCarousel(carousel, value) {
+            if (!carousel) return;
+            if (carousel.isActive === false) {
+                carousel.pendingAlpha = value;
+                return;
+            }
+            carousel.pendingAlpha = null;
+            carousel.setAlpha(value);
+        }
+
         function setGlobalAlpha(value) {
             globalAlpha = value;
-            videoCarousel.setAlpha(value);
-            imageCarousel.setAlpha(value);
-            referenceCarousel.setAlpha(value);
-            portraitCarousel.setAlpha(value);
             updateFloatingAlpha(value);
+            applyAlphaToCarousel(videoCarousel, value);
+            applyAlphaToCarousel(imageCarousel, value);
+            applyAlphaToCarousel(referenceCarousel, value);
+            applyAlphaToCarousel(portraitCarousel, value);
         }
 
         function updateFloatingAlpha(value) {
@@ -1385,6 +1413,37 @@
             updateFloatingAlpha(globalAlpha);
         }
 
+        function setupSectionActivation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    const target = entry.target._carouselRef;
+                    if (!target) return;
+                    target.isActive = entry.isIntersecting;
+                    if (entry.isIntersecting && target.pendingAlpha !== null) {
+                        const pending = target.pendingAlpha;
+                        target.pendingAlpha = null;
+                        target.setAlpha(pending);
+                    }
+                });
+            }, { rootMargin: '200px 0px', threshold: 0.01 });
+
+            const mappings = [
+                { id: 'video-carousel', carousel: videoCarousel },
+                { id: 'image-carousel', carousel: imageCarousel },
+                { id: 'reference-carousel', carousel: referenceCarousel },
+                { id: 'portrait-carousel', carousel: portraitCarousel }
+            ];
+
+            mappings.forEach((item) => {
+                const container = document.getElementById(item.id);
+                if (!container) return;
+                const section = container.closest('.results-section');
+                if (!section) return;
+                section._carouselRef = item.carousel;
+                observer.observe(section);
+            });
+        }
+
         // Video Carousel
         let currentVideoSlide = 0;
         const videoCarousel = {
@@ -1392,6 +1451,8 @@
             slider: null,
             alphaDisplay: null,
             currentAlpha: 0.5,
+            isActive: false,
+            pendingAlpha: null,
 
             init() {
                 this.container = document.getElementById('video-carousel');
@@ -1418,7 +1479,7 @@
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
                                 <div style="text-align: center;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
-                                    <video autoplay loop muted playsinline ${slowAttr}
+                                     <video autoplay loop muted playsinline preload="none" ${slowAttr}
                                            class="video-source-${index}"
                                            data-slow="${example.slowPlayback || false}"
                                            style="max-width: 400px; width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
@@ -1426,7 +1487,7 @@
                                 </div>
                                 <div style="text-align: center;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="video-alpha-label-${index}">0.50</span>)</div>
-                                    <video autoplay loop muted playsinline ${slowAttr}
+                                     <video autoplay loop muted playsinline preload="none" ${slowAttr}
                                            class="video-edited-${index}"
                                            data-folder="${encodeURIComponent(example.folder)}"
                                            data-alphas='${JSON.stringify(example.alphaValues)}'
@@ -1585,6 +1646,8 @@
             slider: null,
             alphaDisplay: null,
             currentAlpha: 0.5,
+            isActive: false,
+            pendingAlpha: null,
 
             init() {
                 this.container = document.getElementById('image-carousel');
@@ -1609,12 +1672,12 @@
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
                                 <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
-                                    <img src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.png"
+                                     <img loading="lazy" decoding="async" src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.png"
                                          style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
                                 <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="image-alpha-label-${index}">0.57</span>)</div>
-                                    <img class="image-edited-${index}"
+                                     <img loading="lazy" decoding="async" class="image-edited-${index}"
                                          data-folder="${encodeURIComponent(example.folder)}"
                                          data-alphas='${JSON.stringify(example.alphaValues)}'
                                          src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[Math.floor(example.alphaValues.length / 2)]}.png"
@@ -1711,6 +1774,8 @@
             slider: null,
             alphaDisplay: null,
             currentAlpha: 0.5,
+            isActive: false,
+            pendingAlpha: null,
 
             init() {
                 this.container = document.getElementById('reference-carousel');
@@ -1730,7 +1795,7 @@
                     const editsHtml = group.edits.map((edit, editIndex) => `
                         <div style="text-align: center; flex: 1; min-width: 240px; max-width: 320px;">
                             <div class="prompt-text" style="margin-bottom: 8px;">"${edit.prompt}"</div>
-                            <img class="reference-edited-${groupIndex}-${editIndex}"
+                               <img loading="lazy" decoding="async" class="reference-edited-${groupIndex}-${editIndex}"
                                  data-reference-edit="true"
                                  data-folder="${encodeURIComponent(edit.folder)}"
                                  data-alphas='${JSON.stringify(edit.alphaValues)}'
@@ -1745,7 +1810,7 @@
                             <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
                                 <div style="text-align: center; width: 100%; max-width: 420px;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
-                                    <img src="${imageBasePath}${encodeURIComponent(group.sourceFolder)}/alpha/0.000.png"
+                                     <img loading="lazy" decoding="async" src="${imageBasePath}${encodeURIComponent(group.sourceFolder)}/alpha/0.000.png"
                                          style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
                                 <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap; width: 100%;">
@@ -1847,6 +1912,8 @@
             alphaDisplay: null,
             currentAlpha: 0.5,
             visibleCount: 2,
+            isActive: false,
+            pendingAlpha: null,
 
             init() {
                 this.container = document.getElementById('portrait-carousel');
@@ -1881,7 +1948,7 @@
                                 <div class="portrait-pair">
                                     <div class="portrait-pair-item" style="text-align: center;">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
-                                        <video autoplay loop muted playsinline ${slowAttr}
+                                             <video autoplay loop muted playsinline preload="none" ${slowAttr}
                                                class="portrait-video-source-${index}"
                                                data-slow="${example.slowPlayback || false}"
                                                style="max-width: 400px; width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
@@ -1889,7 +1956,7 @@
                                     </div>
                                     <div class="portrait-pair-item" style="text-align: center;">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="portrait-alpha-label-${index}">0.50</span>)</div>
-                                        <video autoplay loop muted playsinline ${slowAttr}
+                                             <video autoplay loop muted playsinline preload="none" ${slowAttr}
                                                class="portrait-edited-${index}"
                                                data-folder="${encodeURIComponent(example.folder)}"
                                                data-alphas='${JSON.stringify(example.alphaValues)}'
@@ -1935,12 +2002,12 @@
                                 <div class="portrait-pair">
                                     <div class="portrait-pair-item" style="text-align: center;">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
-                                        <img src="${basePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.${fileExt}"
+                                        <img loading="lazy" decoding="async" src="${basePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.${fileExt}"
                                              style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                     </div>
                                     <div class="portrait-pair-item" style="text-align: center;">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="portrait-alpha-label-${index}">0.57</span>)</div>
-                                        <img class="portrait-edited-${index}"
+                                        <img loading="lazy" decoding="async" class="portrait-edited-${index}"
                                              data-folder="${encodeURIComponent(example.folder)}"
                                              data-alphas='${JSON.stringify(example.alphaValues)}'
                                              data-type="image"
@@ -2195,6 +2262,7 @@
             imageCarousel.init();
             referenceCarousel.init();
             portraitCarousel.init();
+            setupSectionActivation();
             setupFloatingAlpha();
             setGlobalAlpha(globalAlpha);
             setupVideoModal();
