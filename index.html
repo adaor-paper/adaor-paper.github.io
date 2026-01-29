@@ -3,16 +3,1078 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adaor's Site</title>
+    <title>Continuous Control of Editing Models via Adaptive-Origin Guidance</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    
+    <meta property="og:site_name" content="Adaptive-Origin Guidance">
+    <meta property="og:title" content="Continuous Control of Editing Models via Adaptive-Origin Guidance">
+    <meta property="og:description" content="Smooth and continuous control over edit intensity in diffusion-based image and video editing">
+    <meta property="og:type" content="website">
+
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f4f9; }
-        .card { text-align: center; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #fafafa 0%, #f7f5ff 50%, #f4f2ff 100%);
+            padding: 60px 0;
+            box-shadow: 0 4px 20px rgba(139, 69, 19, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(147, 112, 219, 0.04) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            line-height: 1.3;
+            color: #2c3e50;
+            font-family: 'Google Sans', sans-serif;
+        }
+
+        /* Header Authors */
+        .header-authors {
+            margin: 20px 0;
+            font-size: 1.15em;
+        }
+
+        .header-author {
+            display: inline-block;
+            margin: 0 15px 8px 0;
+            font-weight: 500;
+            color: #2c3e50;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .header-author a {
+            color: #3498db;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .header-author a:hover {
+            border-bottom-color: #3498db;
+        }
+
+        /* Header Affiliations */
+        .header-affiliations {
+            margin: 15px 0 25px 0;
+            font-size: 1.05em;
+        }
+
+        .header-affiliation {
+            color: #666;
+            font-style: italic;
+            margin: 0 10px;
+        }
+
+        /* TLDR Section */
+        .tldr-section {
+            margin: 30px auto;
+            padding: 20px 25px;
+            background-color: #f0f8ff;
+            border-left: 4px solid #3498db;
+            border-radius: 0 8px 8px 0;
+            max-width: 900px;
+        }
+
+        .tldr-title {
+            color: #2c3e50;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .tldr-content {
+            color: #34495e;
+            font-size: 1.05em;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .highlight-text {
+            color: #3498db;
+            font-weight: 700;
+        }
+
+        /* Links */
+        .links {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .link-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 0 8px;
+            background: #363636;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .link-btn:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .link-btn .icon {
+            margin-right: 8px;
+        }
+
+        /* Abstract Section */
+        .abstract-section {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .abstract-section h2 {
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .abstract-text {
+            font-size: 1.05em;
+            line-height: 1.8;
+            text-align: justify;
+            color: #333;
+        }
+
+        /* Method Section */
+        .method-section {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .method-section h2 {
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .method-overview {
+            font-size: 1.05em;
+            line-height: 1.8;
+            text-align: justify;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Results Section */
+        .results-section {
+            margin: 60px 0;
+            padding: 40px 20px;
+            background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+        }
+
+        .results-section h2 {
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            color: #666;
+            font-size: 1.05em;
+        }
+
+        /* Video Gallery */
+        .slider-demo-container {
+            max-width: 950px;
+            margin: 0 auto 50px auto;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .slider-demo-container:last-child {
+            border-bottom: none;
+        }
+
+        .prompt-box {
+            background: #f0f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .prompt-label {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .alpha-videos-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .alpha-video-item {
+            flex: 0 0 auto;
+            width: calc(16.666% - 10px);
+            min-width: 120px;
+            max-width: 180px;
+            text-align: center;
+        }
+
+        .alpha-video-item video {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .alpha-video-item video:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+
+        .alpha-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .transient-video-container {
+            text-align: center;
+            max-width: 500px;
+            margin: 20px auto 0;
+        }
+
+        .transient-video-container video {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .transient-video-container video:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        .transient-label {
+            font-size: 14px;
+            color: #3498db;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        /* Image Gallery */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .image-item {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        .image-item .prompt-box {
+            height: 100px;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .image-item .image-pair {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .image-item .image-pair img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .image-item .image-labels {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .image-item.portrait .image-pair {
+            flex-direction: row;
+            gap: 15px;
+        }
+
+        .image-item.portrait .image-pair img {
+            width: 50%;
+        }
+
+        .image-item.portrait .image-labels {
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .image-slider-container {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .alpha-slider {
+            width: 100%;
+            max-width: 100%;
+            cursor: pointer;
+        }
+
+        /* Video Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .video-modal-content video {
+            max-width: 90%;
+            max-height: 75vh;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            z-index: 10000;
+            transition: color 0.2s;
+        }
+
+        .video-modal-close:hover {
+            color: #ff6b6b;
+        }
+
+        .video-modal-label {
+            color: white;
+            font-size: 18px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* Citation Footer */
+        .citation-footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        .citation-footer h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .bibtex-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .bibtex-code {
+            background: #34495e;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .copy-bibtex-btn {
+            display: block;
+            margin: 15px auto 0;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .copy-bibtex-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.8em;
+            }
+            
+            .header-author {
+                display: block;
+                margin: 8px 0;
+            }
+            
+            .alpha-video-item {
+                width: calc(33.333% - 10px);
+            }
+            
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Welcome to Adaor's GitHub Page</h1>
-        <p>Managed via the terminal.</p>
+    <!-- Video Modal -->
+    <div class="video-modal" id="video-modal">
+        <span class="video-modal-close" id="modal-close">&times;</span>
+        <div class="video-modal-content">
+            <video id="modal-video" autoplay loop muted playsinline></video>
+        </div>
+        <div class="video-modal-label" id="modal-label"></div>
     </div>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="title">Continuous Control of Editing Models via Adaptive-Origin Guidance</h1>
+            
+            <!-- Authors -->
+            <div class="header-authors">
+                <span class="header-author">A. Wolf<sup>1,2</sup></span>
+                <span class="header-author">O. Patashnik<sup>1</sup></span>
+                <span class="header-author">C. Katzir<sup>2</sup></span>
+                <span class="header-author">K. Aberman<sup>2</sup></span>
+            </div>
+
+            <!-- Affiliations -->
+            <div class="header-affiliations">
+                <span class="header-affiliation"><sup>1</sup>Tel Aviv University, Israel</span>
+                <span class="header-affiliation"><sup>2</sup>Decart.ai</span>
+            </div>
+
+            <!-- TL;DR -->
+            <div class="tldr-section">
+                <div class="tldr-title">TL;DR</div>
+                <div class="tldr-content">
+                    We introduce <span class="highlight-text">Adaptive-Origin Guidance (AdaOr)</span>, enabling smooth and continuous control over edit intensity in diffusion-based image and video editing models without requiring per-edit optimization or specialized datasets.
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="links">
+                <a href="#" class="link-btn">
+                    <span class="icon">📄</span>
+                    <span>Paper</span>
+                </a>
+                <a href="#" class="link-btn">
+                    <span class="icon">📚</span>
+                    <span>arXiv</span>
+                </a>
+                <a href="#" class="link-btn">
+                    <span class="icon">💻</span>
+                    <span>Code</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Abstract Section -->
+        <section class="abstract-section">
+            <h2>Abstract</h2>
+            <p class="abstract-text">
+                Diffusion-based editing models have emerged as a powerful tool for semantic image and video manipulation. However, existing models lack a mechanism for smoothly controlling the intensity of text-guided edits. In standard text-conditioned generation, Classifier-Free Guidance (CFG) impacts prompt adherence, suggesting it as a potential control for edit intensity in editing models. However, we show that scaling CFG in these models does not produce a smooth transition between the input and the edited result.
+            </p>
+            <p class="abstract-text" style="margin-top: 15px;">
+                We attribute this behavior to the unconditional prediction, which serves as the guidance origin and dominates the generation at low guidance scales, while representing an arbitrary manipulation of the input content. To enable continuous control, we introduce <strong>Adaptive-Origin Guidance (AdaOr)</strong>, a method that adjusts this standard guidance origin with an identity-conditioned adaptive origin, using an identity instruction corresponding to the identity manipulation.
+            </p>
+            <p class="abstract-text" style="margin-top: 15px;">
+                By interpolating this identity prediction with the standard unconditional prediction according to the edit strength, we ensure a continuous transition from the input to the edited result. We evaluate our method on image and video editing tasks, demonstrating that it provides smoother and more consistent control compared to current slider-based editing approaches. Our method incorporates an identity instruction into the standard training framework, enabling fine-grained control at inference time without per-edit procedure or reliance on specialized datasets.
+            </p>
+        </section>
+
+        <!-- Method Section -->
+        <section class="method-section">
+            <h2>Method</h2>
+            <p class="method-overview">
+                The key observation of our work is that the limitation of CFG in controlling editing strength arises from the dominance of the unconditional prediction at low guidance scales. In instruction-based editing settings, the unconditional prediction typically corresponds to an arbitrary manipulation of the input rather than faithful reconstruction. Consequently, when the guidance scale is varied, low guidance values do not induce small semantic changes around the input.
+            </p>
+            <p class="method-overview">
+                To enable smooth control over edit strength, we introduce an <strong>identity instruction</strong> — an instruction that corresponds to the identity manipulation, reproducing the input content without any semantic modification. Building on this, we introduce a guidance mechanism where the term that dominates the prediction at low scales (i.e., the origin) is adjusted according to the desired edit strength. Specifically, we interpolate between the identity prediction and the standard unconditional prediction.
+            </p>
+            <p class="method-overview">
+                By assigning greater weight to the identity term at lower edit strengths and transitioning to the standard term at higher strengths, our method enables smooth, continuous control over manipulation intensity without requiring per-edit optimization or specialized datasets.
+            </p>
+        </section>
+    </div>
+
+    <!-- Video Results Section -->
+    <section class="results-section">
+        <div class="container">
+            <h2>Video Editing Results</h2>
+            <p class="section-description">
+                Continuous edit strength control from α=0 (original) to α=1 (full edit). Click any video to enlarge.
+            </p>
+
+            <div id="interactive-demos">
+                <!-- Interactive demos will be populated here -->
+            </div>
+
+            <div id="other-videos-gallery" style="margin-top: 40px;">
+                <!-- Other videos will be populated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Results Section -->
+    <section class="results-section" style="background: white;">
+        <div class="container">
+            <h2>Image Editing Results</h2>
+            <p class="section-description">
+                AdaOr also enables continuous control for image editing. Drag the slider to adjust edit intensity.
+            </p>
+
+            <div class="image-grid" id="image-demos">
+                <!-- Image demos will be populated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Citation Footer -->
+    <footer class="citation-footer">
+        <div class="container">
+            <h3>Citation</h3>
+            <div class="bibtex-container">
+                <pre class="bibtex-code">@article{wolf2025adaor,
+    title={Continuous Control of Editing Models via Adaptive-Origin Guidance},
+    author={Wolf, A. and Patashnik, O. and Katzir, C. and Aberman, K.},
+    journal={arXiv preprint},
+    year={2025}
+}</pre>
+                <button class="copy-bibtex-btn" onclick="copyBibTeX()">Copy BibTeX</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 81-frame videos for interactive control
+        const interactiveVideos = [
+            {
+                folder: "dog_to_lion_480_832_32",
+                title: "Dog to Lion",
+                prompt: "replace the dog with a lion",
+                alphaValues: ["0.000", "0.032", "0.065", "0.097", "0.129", "0.161", "0.194", "0.226", "0.258", "0.290", "0.323", "0.355", "0.387", "0.419", "0.452", "0.484", "0.516", "0.548", "0.581", "0.613", "0.645", "0.677", "0.710", "0.742", "0.774", "0.806", "0.839", "0.871", "0.903", "0.935", "0.968", "1.000"]
+            },
+            {
+                folder: "bunny_to_chocolate_480_832_32",
+                title: "Bunny to Chocolate",
+                prompt: "replace the white bunny with a chocolate bunny made of brown chocolate",
+                alphaValues: ["0.000", "0.032", "0.065", "0.097", "0.129", "0.161", "0.194", "0.226", "0.258", "0.290", "0.323", "0.355", "0.387", "0.419", "0.452", "0.484", "0.516", "0.548", "0.581", "0.613", "0.645", "0.677", "0.710", "0.742", "0.774", "0.806", "0.839", "0.871", "0.903", "0.935", "0.968", "1.000"]
+            },
+            {
+                folder: "man_to_knight_480_832_32",
+                title: "Man to Knight",
+                prompt: "Turn the man into a medieval knight",
+                alphaValues: ["0.000", "0.032", "0.065", "0.097", "0.129", "0.161", "0.194", "0.226", "0.258", "0.290", "0.323", "0.355", "0.387", "0.419", "0.452", "0.484", "0.516", "0.548", "0.581", "0.613", "0.645", "0.677", "0.710", "0.742", "0.774", "0.806", "0.839", "0.871", "0.903", "0.935", "0.968", "1.000"]
+            },
+            {
+                folder: "yellow_to_kimino_480_832_32",
+                title: "Dress to Kimono",
+                prompt: "change the yellow dress to a pink kimono",
+                alphaValues: ["0.000", "0.032", "0.065", "0.097", "0.129", "0.161", "0.194", "0.226", "0.258", "0.290", "0.323", "0.355", "0.387", "0.419", "0.452", "0.484", "0.516", "0.548", "0.581", "0.613", "0.645", "0.677", "0.710", "0.742", "0.774", "0.806", "0.839", "0.871", "0.903", "0.935", "0.968", "1.000"]
+            },
+            {
+                folder: "dog_to_tiger",
+                title: "Dog to Tiger",
+                prompt: "Replace the dog with a tiger",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            }
+        ];
+
+        // Other videos
+        const otherVideos = [
+            {
+                folder: "bald_to_hair_480_832_32",
+                title: "Bald to Hair",
+                prompt: "add long healthy hair on the person's head",
+                alphaValues: ["0.000", "0.032", "0.065", "0.097", "0.129", "0.161", "0.194", "0.226", "0.258", "0.290", "0.323", "0.355", "0.387", "0.419", "0.452", "0.484", "0.516", "0.548", "0.581", "0.613", "0.645", "0.677", "0.710", "0.742", "0.774", "0.806", "0.839", "0.871", "0.903", "0.935", "0.968", "1.000"]
+            },
+            {
+                folder: "bold man to long hair",
+                title: "Bald to Long Hair",
+                prompt: "Add full thick long hair to the man",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                slowPlayback: true
+            },
+            {
+                folder: "gold teeth",
+                title: "Gold Teeth",
+                prompt: "Replace the man's teeth color with gold",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                slowPlayback: true
+            },
+            {
+                folder: "pool  to snow - gil prompt",
+                title: "Pool to Snow",
+                prompt: "Change the weather to extreme winter conditions with heavy snowfall",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                slowPlayback: true
+            },
+            {
+                folder: "skinny dude to super strong shirtless",
+                title: "Skinny to Muscular",
+                prompt: "Transform the thin man into a muscular physique",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                slowPlayback: true
+            },
+            {
+                folder: "Freckles vid",
+                title: "Add Freckles",
+                prompt: "Add natural freckles to the faces of both the mother and the son",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                slowPlayback: true
+            },
+            {
+                folder: "frozen_cherry",
+                title: "Frozen Cherry",
+                prompt: "Add a frozen layer over the cherry, as if lightly frosted",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                slowPlayback: true
+            }
+        ];
+
+        // Image examples
+        const imageLandscape = [
+            {
+                folder: "dog_to_tiger_good",
+                title: "Dog to Tiger",
+                prompt: "Replace the dog with a tiger",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "dog_to_cow",
+                title: "Dog to Cow",
+                prompt: "Replace the dog with a cow",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "dog_add_autumn_leaves",
+                title: "Autumn Leaves",
+                prompt: "The season is autumn, the floor is covered with orange leaves",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "horse to unicorn",
+                title: "Horse to Unicorn",
+                prompt: "Transform the horse into a light pastel pink unicorn",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "horse to stone",
+                title: "Horse to Stone",
+                prompt: "Transform the horse into a marble stone sculpture",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "horse to wood",
+                title: "Horse to Wood",
+                prompt: "Transform the horse into a carved wooden horse",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "horse to digital voxel",
+                title: "Horse to Voxel",
+                prompt: "Transform the horse into a pixelated digital voxel horse",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "add_a_beard_fine",
+                title: "Add Beard",
+                prompt: "Add a thick long beard to the man's jaw",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "old castle to new",
+                title: "Old Castle to New",
+                prompt: "Transform the abandoned castle into a well-maintained castle",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "old house to new",
+                title: "Old House to New",
+                prompt: "Transform the old neglected house into a new, modern, well-maintained home",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            },
+            {
+                folder: "teddy bear to robot bear",
+                title: "Teddy to Robot",
+                prompt: "Transform the teddy bear into a robotic bear with mechanical parts",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                portrait: true
+            },
+            {
+                folder: "wool flower",
+                title: "Wool Flower",
+                prompt: "Transform the plant's petals into embroidered bluish wool fabric",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                portrait: true
+            },
+            {
+                folder: "camel_to_snow",
+                title: "Camel in Snow",
+                prompt: "Add snow covering the ground making it look like winter and add the northern lights",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                portrait: true
+            },
+            {
+                folder: "girl_to_smile",
+                title: "Add Smile",
+                prompt: "Transform the mouth and lower jaw to be smiling and happy",
+                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+                portrait: true
+            }
+        ];
+
+        const videoBasePath = "assets/videos/";
+        const imageBasePath = "assets/images/";
+
+        // Populate Interactive Demos
+        function populateInteractiveDemos() {
+            const container = document.getElementById('interactive-demos');
+            container.innerHTML = '';
+
+            interactiveVideos.forEach((example, index) => {
+                const len = example.alphaValues.length;
+                const step = (len - 1) / 5;
+                const alphaIndices = [0, 1, 2, 3, 4, 5].map(i => Math.round(i * step));
+                const selectedAlphas = alphaIndices.map(i => example.alphaValues[i]);
+
+                const alphaVideosHtml = selectedAlphas.map((alpha, i) => `
+                    <div class="alpha-video-item">
+                        <video autoplay loop muted playsinline preload="auto"
+                               class="sync-video-${index}"
+                               src="${videoBasePath}${encodeURIComponent(example.folder)}/alpha/${alpha}.mp4"></video>
+                        <div class="alpha-label">α = ${alpha}</div>
+                    </div>
+                `).join('');
+
+                const demo = document.createElement('div');
+                demo.className = 'slider-demo-container';
+                demo.innerHTML = `
+                    <div class="prompt-box">
+                        <div class="prompt-label">${example.title}</div>
+                        <div>"${example.prompt}"</div>
+                    </div>
+                    <div class="alpha-videos-row">
+                        ${alphaVideosHtml}
+                    </div>
+                    <div class="transient-video-container">
+                        <video autoplay loop muted playsinline
+                               src="${videoBasePath}${encodeURIComponent(example.folder)}/transient_output.mp4"></video>
+                        <div class="transient-label">Continuous α transition (0 → 1)</div>
+                    </div>
+                `;
+                container.appendChild(demo);
+
+                setTimeout(() => {
+                    const videos = document.querySelectorAll(`.sync-video-${index}`);
+                    if (videos.length > 0) {
+                        const master = videos[0];
+                        master.addEventListener('play', () => {
+                            videos.forEach((v, i) => {
+                                if (i !== 0) v.currentTime = master.currentTime;
+                            });
+                        });
+                        setInterval(() => {
+                            videos.forEach((v, i) => {
+                                if (i !== 0 && Math.abs(v.currentTime - master.currentTime) > 0.3) {
+                                    v.currentTime = master.currentTime;
+                                }
+                            });
+                        }, 1000);
+                    }
+                }, 500);
+            });
+        }
+
+        // Populate Other Videos
+        function populateOtherVideos() {
+            const gallery = document.getElementById('other-videos-gallery');
+            gallery.innerHTML = '';
+
+            otherVideos.forEach((example, index) => {
+                const baseIndex = interactiveVideos.length + index;
+                const len = example.alphaValues.length;
+                const step = (len - 1) / 5;
+                const alphaIndices = [0, 1, 2, 3, 4, 5].map(i => Math.round(i * step));
+                const selectedAlphas = alphaIndices.map(i => example.alphaValues[i]);
+
+                const slowAttr = example.slowPlayback ? 'data-slow="true"' : '';
+                const alphaVideosHtml = selectedAlphas.map((alpha, i) => `
+                    <div class="alpha-video-item">
+                        <video autoplay loop muted playsinline preload="auto"
+                               class="sync-video-other-${index}"
+                               ${slowAttr}
+                               src="${videoBasePath}${encodeURIComponent(example.folder)}/alpha/${alpha}.mp4"></video>
+                        <div class="alpha-label">α = ${alpha}</div>
+                    </div>
+                `).join('');
+
+                const item = document.createElement('div');
+                item.className = 'slider-demo-container';
+                item.innerHTML = `
+                    <div class="prompt-box">
+                        <div class="prompt-label">${example.title}</div>
+                        <div>"${example.prompt}"</div>
+                    </div>
+                    <div class="alpha-videos-row">
+                        ${alphaVideosHtml}
+                    </div>
+                    <div class="transient-video-container">
+                        <video autoplay loop muted playsinline
+                               ${slowAttr}
+                               src="${videoBasePath}${encodeURIComponent(example.folder)}/transient_output.mp4"></video>
+                        <div class="transient-label">Continuous α transition (0 → 1)</div>
+                    </div>
+                `;
+                gallery.appendChild(item);
+
+                setTimeout(() => {
+                    const videos = document.querySelectorAll(`.sync-video-other-${index}`);
+                    const transientVideo = item.querySelector('.transient-video-container video');
+                    const playbackRate = example.slowPlayback ? 0.333 : 1.0;
+
+                    if (videos.length > 0) {
+                        const master = videos[0];
+                        videos.forEach(v => { v.playbackRate = playbackRate; });
+                        if (transientVideo) transientVideo.playbackRate = playbackRate;
+
+                        master.addEventListener('play', () => {
+                            videos.forEach((v, i) => {
+                                if (i !== 0) v.currentTime = master.currentTime;
+                            });
+                        });
+                        setInterval(() => {
+                            videos.forEach((v, i) => {
+                                if (i !== 0 && Math.abs(v.currentTime - master.currentTime) > 0.3) {
+                                    v.currentTime = master.currentTime;
+                                }
+                            });
+                        }, 1000);
+                    }
+                }, 500);
+            });
+        }
+
+        // Populate Image Demos
+        function populateImageDemos() {
+            const container = document.getElementById('image-demos');
+            container.innerHTML = '';
+
+            imageLandscape.forEach((example, index) => {
+                const midIndex = Math.floor(example.alphaValues.length / 2);
+                const midAlpha = example.alphaValues[midIndex];
+                const id = `img-${index}`;
+
+                const item = document.createElement('div');
+                item.className = example.portrait ? 'image-item portrait' : 'image-item';
+                item.innerHTML = `
+                    <div class="prompt-box">
+                        <div class="prompt-label">${example.title}</div>
+                        <div style="font-size: 14px;">"${example.prompt}"</div>
+                    </div>
+                    <div class="image-labels">
+                        <span>Source</span>
+                        <span>Edited (α = <span id="img-alpha-${id}">${midAlpha}</span>)</span>
+                    </div>
+                    <div class="image-pair">
+                        <img src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/0.000.png">
+                        <img id="img-edited-${id}" src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${midAlpha}.png">
+                    </div>
+                    <div class="image-slider-container">
+                        <input type="range" class="alpha-slider" id="img-slider-${id}"
+                               min="0" max="${example.alphaValues.length - 1}" value="${midIndex}"
+                               data-alphas='${JSON.stringify(example.alphaValues)}'
+                               data-folder="${encodeURIComponent(example.folder)}"
+                               data-id="${id}">
+                    </div>
+                `;
+                container.appendChild(item);
+
+                setTimeout(() => {
+                    const slider = document.getElementById(`img-slider-${id}`);
+                    slider.addEventListener('input', function() {
+                        const alphas = JSON.parse(this.dataset.alphas);
+                        const alphaValue = alphas[this.value];
+                        const folder = this.dataset.folder;
+                        const itemId = this.dataset.id;
+
+                        document.getElementById(`img-alpha-${itemId}`).textContent = alphaValue;
+                        document.getElementById(`img-edited-${itemId}`).src = 
+                            `${imageBasePath}${folder}/alpha/${alphaValue}.png`;
+                    });
+                }, 100);
+            });
+        }
+
+        // Video Modal
+        function setupVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const modalVideo = document.getElementById('modal-video');
+            const modalLabel = document.getElementById('modal-label');
+            const modalClose = document.getElementById('modal-close');
+
+            document.addEventListener('click', function(e) {
+                if (e.target.tagName === 'VIDEO' && !modal.contains(e.target)) {
+                    const videoSrc = e.target.src;
+                    const isSlow = e.target.hasAttribute('data-slow');
+                    const label = e.target.closest('.alpha-video-item')?.querySelector('.alpha-label')?.textContent ||
+                                  e.target.closest('.transient-video-container')?.querySelector('.transient-label')?.textContent ||
+                                  'Video';
+
+                    modalVideo.src = videoSrc;
+                    modalVideo.playbackRate = isSlow ? 0.333 : 1.0;
+                    modalLabel.textContent = label;
+                    modal.classList.add('active');
+                    modalVideo.play();
+                }
+            });
+
+            modalClose.addEventListener('click', function() {
+                modal.classList.remove('active');
+                modalVideo.pause();
+                modalVideo.src = '';
+            });
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    modalVideo.pause();
+                    modalVideo.src = '';
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    modalVideo.pause();
+                    modalVideo.src = '';
+                }
+            });
+        }
+
+        // Copy BibTeX
+        function copyBibTeX() {
+            const bibtex = document.querySelector('.bibtex-code').textContent;
+            navigator.clipboard.writeText(bibtex).then(() => {
+                const btn = document.querySelector('.copy-bibtex-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = originalText, 2000);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            populateInteractiveDemos();
+            populateOtherVideos();
+            populateImageDemos();
+            setupVideoModal();
+        });
+    </script>
 </body>
 </html>
