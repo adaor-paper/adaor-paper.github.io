@@ -1031,13 +1031,13 @@
                 prompt: "add long healthy hair on the person's head",
                 alphaValues: ["0.000", "0.032", "0.065", "0.097", "0.129", "0.161", "0.194", "0.226", "0.258", "0.290", "0.323", "0.355", "0.387", "0.419", "0.452", "0.484", "0.516", "0.548", "0.581", "0.613", "0.645", "0.677", "0.710", "0.742", "0.774", "0.806", "0.839", "0.871", "0.903", "0.935", "0.968", "1.000"]
             },
-            {
-                folder: "bold man to long hair",
-                title: "Bald to Long Hair",
-                prompt: "Add full thick long hair to the man",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
-                slowPlayback: true
-            },
+            // {
+            //     folder: "bold man to long hair",
+            //     title: "Bald to Long Hair",
+            //     prompt: "Add full thick long hair to the man",
+            //     alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"],
+            //     slowPlayback: true
+            // },
             {
                 folder: "gold teeth",
                 title: "Gold Teeth",
@@ -1208,6 +1208,8 @@
                                 <div style="text-align: center;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
                                     <video autoplay loop muted playsinline ${slowAttr}
+                                           class="video-source-${index}"
+                                           data-slow="${example.slowPlayback || false}"
                                            style="max-width: 400px; width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
                                            src="${videoBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.mp4"></video>
                                 </div>
@@ -1226,6 +1228,30 @@
                     `;
                     
                     this.container.appendChild(slide);
+                    
+                    // Set slow playback rate for both videos after loading
+                    if (example.slowPlayback) {
+                        setTimeout(() => {
+                            const sourceVid = document.querySelector(`.video-source-${index}`);
+                            const editedVid = document.querySelector(`.video-edited-${index}`);
+                            if (sourceVid) {
+                                sourceVid.addEventListener('loadeddata', () => {
+                                    sourceVid.playbackRate = 0.333;
+                                }, { once: true });
+                                if (sourceVid.readyState >= 2) {
+                                    sourceVid.playbackRate = 0.333;
+                                }
+                            }
+                            if (editedVid) {
+                                editedVid.addEventListener('loadeddata', () => {
+                                    editedVid.playbackRate = 0.333;
+                                }, { once: true });
+                                if (editedVid.readyState >= 2) {
+                                    editedVid.playbackRate = 0.333;
+                                }
+                            }
+                        }, 100);
+                    }
                 });
 
                 // Create indicators
@@ -1265,7 +1291,7 @@
                 const alphaValue = example.alphaValues[alphaIndex];
                 
                 const video = document.querySelector(`.video-edited-${currentVideoSlide}`);
-                const sourceVideo = document.querySelector(`.carousel-slide:nth-child(${currentVideoSlide + 1}) video:first-of-type`);
+                const sourceVideo = document.querySelector(`.video-source-${currentVideoSlide}`);
                 const label = document.querySelector(`.video-alpha-label-${currentVideoSlide}`);
                 
                 if (video && label) {
@@ -1282,8 +1308,11 @@
                         video.currentTime = 0;
                         video.play();
                         
-                        // Also restart the source video
+                        // Also restart the source video with matching playback rate
                         if (sourceVideo) {
+                            if (isSlow) {
+                                sourceVideo.playbackRate = 0.333;
+                            }
                             sourceVideo.currentTime = 0;
                             sourceVideo.play();
                         }
@@ -1300,11 +1329,17 @@
                     dot.classList.toggle('active', i === index);
                 });
 
-                // Restart all videos in the current slide
+                // Restart all videos in the current slide with proper playback rate
                 const currentSlide = this.container.children[index];
+                const example = allVideos[index];
+                const isSlow = example.slowPlayback || false;
+                
                 if (currentSlide) {
                     const videos = currentSlide.querySelectorAll('video');
                     videos.forEach(v => {
+                        if (isSlow) {
+                            v.playbackRate = 0.333;
+                        }
                         v.currentTime = 0;
                         v.play();
                     });
