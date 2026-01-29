@@ -193,7 +193,7 @@
 
         /* Method Section */
         .method-section {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 60px auto;
             padding: 0 20px;
         }
@@ -213,6 +213,54 @@
             text-align: justify;
             color: #333;
             margin-bottom: 30px;
+        }
+
+        .method-figures {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .method-figure {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .method-figure img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .method-figure-caption {
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .method-figure-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 1.05em;
+        }
+
+        .method-explanation {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #333;
         }
 
         /* Results Section */
@@ -593,6 +641,45 @@
             <p class="method-overview">
                 The key observation of our work is that the limitation of CFG in controlling editing strength arises from the dominance of the unconditional prediction at low guidance scales. In instruction-based editing settings, the unconditional prediction typically corresponds to an arbitrary manipulation of the input rather than faithful reconstruction. Consequently, when the guidance scale is varied, low guidance values do not induce small semantic changes around the input.
             </p>
+
+            <div class="method-figures">
+                <div class="method-figure">
+                    <img src="assets/method/scheme_a_new.png" alt="Standard CFG">
+                    <div class="method-figure-title">(a) Standard CFG</div>
+                    <div class="method-figure-caption">
+                        Null-condition as origin. The origin is given by ε<sub>t</sub>(∅), and the guidance direction is ε<sub>t</sub>(c<sub>T</sub>) - ε<sub>t</sub>(∅).
+                    </div>
+                </div>
+
+                <div class="method-figure">
+                    <img src="assets/method/scheme_b_new.png" alt="Adaptive Origin Guidance">
+                    <div class="method-figure-title">(b) Adaptive Origin (Ours)</div>
+                    <div class="method-figure-caption">
+                        Null-identity interpolated origin. The origin is interpolated between the identity prediction ε<sub>t</sub>(REC) and the standard null prediction ε<sub>t</sub>(∅), as a function of the edit strength.
+                    </div>
+                </div>
+
+                <div class="method-figure">
+                    <img src="assets/method/scheme_c_new.png" alt="Edit Progression Comparison">
+                    <div class="method-figure-title">(c) Edit Progression Comparison</div>
+                    <div class="method-figure-caption">
+                        Varying CFG scale vs AdaOr edit strength. Standard CFG originates from arbitrary edits, while AdaOr smoothly transitions from the input image to the target edit.
+                    </div>
+                </div>
+            </div>
+
+            <div class="method-explanation">
+                <p style="margin-bottom: 15px;">
+                    <strong>Geometric Interpretation:</strong> In both (a) and (b), we illustrate a single denoising step in which the latent z<sub>t</sub> lies on the manifold of the marginal distribution p<sub>t</sub>. The origin prediction first denoises z<sub>t</sub> toward the manifold of the less noisy distribution p<sub>t-1</sub>, after which the trajectory is steered on this manifold toward better alignment with the conditioning signal.
+                </p>
+                <p style="margin-bottom: 15px;">
+                    In <strong>standard CFG</strong> (a), the origin is dominated by the unconditional prediction at low guidance scales, leading to arbitrary deviations from the source content.
+                </p>
+                <p>
+                    In <strong>Adaptive Origin Guidance</strong> (b), we interpolate between the identity prediction and the standard null prediction as a function of edit strength. This ensures faithful reconstruction at low strengths while smoothly recovering standard CFG behavior at higher strengths, enabling precise control over manipulation intensity.
+                </p>
+            </div>
+
             <p class="method-overview">
                 To enable smooth control over edit strength, we introduce an <strong>identity instruction</strong> — an instruction that corresponds to the identity manipulation, reproducing the input content without any semantic modification. Building on this, we introduce a guidance mechanism where the term that dominates the prediction at low scales (i.e., the origin) is adjusted according to the desired edit strength. Specifically, we interpolate between the identity prediction and the standard unconditional prediction.
             </p>
