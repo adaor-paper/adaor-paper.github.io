@@ -104,7 +104,7 @@
         /* Header Authors */
         .header-authors {
             margin: 0;
-            font-size: 1.15em;
+            font-size: 1.5em;
         }
 
         .header-author {
@@ -810,7 +810,8 @@
         <div class="header-content">
             <h1 class="title">Continuous Control of Editing Models via Adaptive-Origin Guidance</h1>
             
-            <!-- Authors -->
+            <!-- Authors (commented out for anonymous submission) -->
+            <!--
             <div class="header-authors">
                 <span class="header-author">A. Wolf<sup>1,2</sup></span>
                 <span class="header-author">O. Patashnik<sup>1</sup></span>
@@ -818,11 +819,18 @@
                 <span class="header-author">K. Aberman<sup>2</sup></span>
             </div>
 
-            <!-- Affiliations -->
             <div class="header-affiliations">
                 <span class="header-affiliation"><sup>1</sup>Tel Aviv University, Israel</span>
                 <span class="header-affiliation"><sup>2</sup>Decart.ai</span>
             </div>
+            -->
+
+            <div class="header-authors">
+                <span class="header-author">Anonymous Writers</span>
+            </div>
+            <!-- <div class="header-affiliations">
+                <span class="header-affiliation">SIGGRAPH 2026 Submission ID 399</span>
+            </div> -->
 
             
 
@@ -830,11 +838,11 @@
             <div class="links">
                 <a href="#" class="link-btn">
                     <span class="icon">📚</span>
-                    <span>arXiv</span>
+                    <span>arXiv (Soon)</span>
                 </a>
                 <a href="#" class="link-btn">
-                    <span class="icon">💻</span>
-                    <span>Code</span>
+                    <span class="icon">🤗</span>
+                    <span>HF (Soon)</span>
                 </a>
             </div>
 
@@ -1001,6 +1009,39 @@
         </div>
     </section>
 
+    <!-- Shared Reference Results Section -->
+    <section class="results-section">
+        <div class="container">
+            <h2>Shared Reference Image Results</h2>
+            <p class="section-description">
+                Examples that share the same reference image. Adjust the slider to control edit intensity.
+            </p>
+
+            <div class="carousel-container">
+                <div class="carousel-wrapper">
+                    <button class="carousel-nav prev" id="reference-prev">‹</button>
+                    <button class="carousel-nav next" id="reference-next">›</button>
+                    <div class="carousel-content" id="reference-carousel">
+                        <!-- Reference slides will be populated here -->
+                    </div>
+                </div>
+                <div class="carousel-indicators" id="reference-indicators"></div>
+            </div>
+
+            <div class="global-alpha-control">
+                <h3>Global Edit Intensity Control</h3>
+                <div class="global-slider-container">
+                    <span>α = 0.00</span>
+                    <input type="range" class="global-slider" id="reference-global-slider" min="0" max="100" value="50">
+                    <span>α = 1.00</span>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span class="global-alpha-display" id="reference-alpha-display">α = 0.50</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Portrait Format Results Section -->
     <section class="results-section">
         <div class="container">
@@ -1034,7 +1075,8 @@
         </div>
     </section>
 
-    <!-- Citation Footer -->
+    <!-- Citation Footer (commented out for anonymous submission) -->
+    <!--
     <footer class="citation-footer">
         <div class="container">
             <h3>Citation</h3>
@@ -1049,6 +1091,7 @@
             </div>
         </div>
     </footer>
+    -->
 
     <script>
         // 81-frame videos for interactive control
@@ -1133,48 +1176,6 @@
         // Image examples
         const imageLandscape = [
             {
-                folder: "dog_to_tiger_good",
-                title: "Dog to Tiger",
-                prompt: "Replace the dog with a tiger",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
-            },
-            {
-                folder: "dog_to_cow",
-                title: "Dog to Cow",
-                prompt: "Replace the dog with a cow",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
-            },
-            {
-                folder: "dog_add_autumn_leaves",
-                title: "Autumn Leaves",
-                prompt: "The season is autumn, the floor is covered with orange leaves",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
-            },
-            {
-                folder: "horse to unicorn",
-                title: "Horse to Unicorn",
-                prompt: "Transform the horse into a light pastel pink unicorn",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
-            },
-            {
-                folder: "horse to stone",
-                title: "Horse to Stone",
-                prompt: "Transform the horse into a marble stone sculpture",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
-            },
-            {
-                folder: "horse to wood",
-                title: "Horse to Wood",
-                prompt: "Transform the horse into a carved wooden horse",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
-            },
-            {
-                folder: "horse to digital voxel",
-                title: "Horse to Voxel",
-                prompt: "Transform the horse into a pixelated digital voxel horse",
-                alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
-            },
-            {
                 folder: "add_a_beard_fine",
                 title: "Add Beard",
                 prompt: "Add a thick long beard to the man's jaw",
@@ -1191,6 +1192,65 @@
                 title: "Old House to New",
                 prompt: "Transform the old neglected house into a new, modern, well-maintained home",
                 alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+            }
+        ];
+
+        const referenceGroups = [
+            {
+                title: "Dog Reference",
+                description: "All edits share the same dog source image.",
+                sourceFolder: "dog_to_tiger_good",
+                edits: [
+                    {
+                        folder: "dog_to_tiger_good",
+                        title: "Dog to Tiger",
+                        prompt: "Replace the dog with a tiger",
+                        alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+                    },
+                    {
+                        folder: "dog_to_cow",
+                        title: "Dog to Cow",
+                        prompt: "Replace the dog with a cow",
+                        alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+                    },
+                    {
+                        folder: "dog_add_autumn_leaves",
+                        title: "Autumn Leaves",
+                        prompt: "The season is autumn, the floor is covered with orange leaves",
+                        alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+                    }
+                ]
+            },
+            {
+                title: "Horse Reference",
+                description: "All edits share the same horse source image.",
+                sourceFolder: "horse to unicorn",
+                edits: [
+                    {
+                        folder: "horse to unicorn",
+                        title: "Horse to Unicorn",
+                        prompt: "Transform the horse into a light pastel pink unicorn",
+                        alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+                    },
+                    {
+                        folder: "horse to stone",
+                        title: "Horse to Stone",
+                        prompt: "Transform the horse into a marble stone sculpture",
+                        alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+                    },
+                    // {
+                    //     folder: "horse to wood",
+                    //     title: "Horse to Wood",
+                    //     prompt: "Transform the horse into a carved wooden horse",
+                    //     alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+                    // },
+                    {
+                        folder: "horse to digital voxel",
+                        title: "Horse to Voxel",
+                        prompt: "Transform the horse into a pixelated digital voxel horse",
+                        alphaValues: ["0.000", "0.143", "0.286", "0.429", "0.571", "0.714", "0.857", "1.000"]
+                    }
+                ]
             }
         ];
 
@@ -1240,6 +1300,16 @@
         // Combine all videos
         const allVideos = [...interactiveVideos, ...otherVideos];
 
+        let globalAlpha = 0.5;
+
+        function setGlobalAlpha(value) {
+            globalAlpha = value;
+            videoCarousel.setAlpha(value);
+            imageCarousel.setAlpha(value);
+            referenceCarousel.setAlpha(value);
+            portraitCarousel.setAlpha(value);
+        }
+
         // Video Carousel
         let currentVideoSlide = 0;
         const videoCarousel = {
@@ -1268,8 +1338,7 @@
                     slide.innerHTML = `
                         <div class="slider-demo-container">
                             <div class="prompt-box">
-                                <div class="prompt-label">${example.title}</div>
-                                <div>"${example.prompt}"</div>
+                                <div style="color: #d0d0d0;">"${example.prompt}"</div>
                             </div>
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
                                 <div style="text-align: center;">
@@ -1339,13 +1408,9 @@
             setupGlobalSlider() {
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
-                    this.currentAlpha = value;
-                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
-                    this.updateSliderBackground(e.target.value);
-                    this.updateCurrentVideo();
+                    setGlobalAlpha(value);
                 });
-
-                this.updateSliderBackground(50);
+                this.setAlpha(globalAlpha);
             },
 
             updateSliderBackground(value) {
@@ -1421,6 +1486,16 @@
 
             prevSlide() {
                 this.goToSlide((currentVideoSlide - 1 + allVideos.length) % allVideos.length);
+            },
+
+            setAlpha(value) {
+                this.currentAlpha = value;
+                if (this.slider) {
+                    this.slider.value = Math.round(value * 100);
+                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    this.updateSliderBackground(this.slider.value);
+                }
+                this.updateCurrentVideo();
             }
         };
 
@@ -1450,8 +1525,7 @@
                     slide.innerHTML = `
                         <div class="slider-demo-container">
                             <div class="prompt-box">
-                                <div class="prompt-label">${example.title}</div>
-                                <div>"${example.prompt}"</div>
+                                <div style="color: #d0d0d0;">"${example.prompt}"</div>
                             </div>
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
                                 <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
@@ -1492,13 +1566,9 @@
             setupGlobalSlider() {
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
-                    this.currentAlpha = value;
-                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
-                    this.updateSliderBackground(e.target.value);
-                    this.updateCurrentImage();
+                    setGlobalAlpha(value);
                 });
-
-                this.updateSliderBackground(50);
+                this.setAlpha(globalAlpha);
             },
 
             updateSliderBackground(value) {
@@ -1538,6 +1608,150 @@
 
             prevSlide() {
                 this.goToSlide((currentImageSlide - 1 + imageLandscape.length) % imageLandscape.length);
+            },
+
+            setAlpha(value) {
+                this.currentAlpha = value;
+                if (this.slider) {
+                    this.slider.value = Math.round(value * 100);
+                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    this.updateSliderBackground(this.slider.value);
+                }
+                this.updateCurrentImage();
+            }
+        };
+
+        // Reference Image Carousel
+        let currentReferenceSlide = 0;
+        const referenceCarousel = {
+            container: null,
+            slider: null,
+            alphaDisplay: null,
+            currentAlpha: 0.5,
+
+            init() {
+                this.container = document.getElementById('reference-carousel');
+                this.slider = document.getElementById('reference-global-slider');
+                this.alphaDisplay = document.getElementById('reference-alpha-display');
+
+                this.populateSlides();
+                this.setupNavigation();
+                this.setupGlobalSlider();
+            },
+
+            populateSlides() {
+                referenceGroups.forEach((group, groupIndex) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'carousel-slide';
+
+                    const editsHtml = group.edits.map((edit, editIndex) => `
+                        <div style="text-align: center; flex: 1; min-width: 240px; max-width: 320px;">
+                            <div style="color: #d0d0d0; font-size: 0.9em; margin-bottom: 8px;">"${edit.prompt}"</div>
+                            <img class="reference-edited-${groupIndex}-${editIndex}"
+                                 data-reference-edit="true"
+                                 data-folder="${encodeURIComponent(edit.folder)}"
+                                 data-alphas='${JSON.stringify(edit.alphaValues)}'
+                                 data-label-class="reference-alpha-label-${groupIndex}-${editIndex}"
+                                 src="${imageBasePath}${encodeURIComponent(edit.folder)}/alpha/${edit.alphaValues[Math.floor(edit.alphaValues.length / 2)]}.png"
+                                 style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                        </div>
+                    `).join('');
+
+                    slide.innerHTML = `
+                        <div class="slider-demo-container">
+                            <div class="prompt-box">
+                                <div style="color: #d0d0d0;">${group.description}</div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
+                                <div style="text-align: center; width: 100%; max-width: 420px;">
+                                    <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
+                                    <img src="${imageBasePath}${encodeURIComponent(group.sourceFolder)}/alpha/0.000.png"
+                                         style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                </div>
+                                <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap; width: 100%;">
+                                    ${editsHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    this.container.appendChild(slide);
+                });
+
+                const indicators = document.getElementById('reference-indicators');
+                referenceGroups.forEach((_, index) => {
+                    const dot = document.createElement('span');
+                    dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+                    dot.onclick = () => this.goToSlide(index);
+                    indicators.appendChild(dot);
+                });
+            },
+
+            setupNavigation() {
+                document.getElementById('reference-prev').onclick = () => this.prevSlide();
+                document.getElementById('reference-next').onclick = () => this.nextSlide();
+            },
+
+            setupGlobalSlider() {
+                this.slider.addEventListener('input', (e) => {
+                    const value = e.target.value / 100;
+                    setGlobalAlpha(value);
+                });
+
+                this.setAlpha(globalAlpha);
+            },
+
+            updateSliderBackground(value) {
+                this.slider.style.background = `linear-gradient(to right, #3498db 0%, #3498db ${value}%, #e0e0e0 ${value}%, #e0e0e0 100%)`;
+            },
+
+            updateCurrentReference() {
+                const slide = this.container.children[currentReferenceSlide];
+                if (!slide) return;
+
+                const editedItems = slide.querySelectorAll('[data-reference-edit="true"]');
+                editedItems.forEach((item) => {
+                    const alphas = JSON.parse(item.dataset.alphas || '[]');
+                    if (!alphas.length) return;
+                    const alphaIndex = Math.round(this.currentAlpha * (alphas.length - 1));
+                    const alphaValue = alphas[alphaIndex];
+                    const folder = item.dataset.folder;
+                    const labelClass = item.dataset.labelClass;
+                    const label = slide.querySelector(`.${labelClass}`);
+                    item.src = `${imageBasePath}${folder}/alpha/${alphaValue}.png`;
+                    if (label) {
+                        label.textContent = alphaValue;
+                    }
+                });
+            },
+
+            goToSlide(index) {
+                currentReferenceSlide = index;
+                this.container.style.transform = `translateX(-${index * 100}%)`;
+
+                document.querySelectorAll('#reference-indicators .carousel-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+
+                this.updateCurrentReference();
+            },
+
+            nextSlide() {
+                this.goToSlide((currentReferenceSlide + 1) % referenceGroups.length);
+            },
+
+            prevSlide() {
+                this.goToSlide((currentReferenceSlide - 1 + referenceGroups.length) % referenceGroups.length);
+            },
+
+            setAlpha(value) {
+                this.currentAlpha = value;
+                if (this.slider) {
+                    this.slider.value = Math.round(value * 100);
+                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    this.updateSliderBackground(this.slider.value);
+                }
+                this.updateCurrentReference();
             }
         };
 
@@ -1574,8 +1788,7 @@
                         slide.innerHTML = `
                             <div class="slider-demo-container">
                                 <div class="prompt-box">
-                                    <div class="prompt-label">${example.title}</div>
-                                    <div>"${example.prompt}"</div>
+                                    <div style="color: #d0d0d0;">"${example.prompt}"</div>
                                 </div>
                                 <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
                                     <div style="text-align: center;">
@@ -1629,8 +1842,7 @@
                         slide.innerHTML = `
                             <div class="slider-demo-container">
                                 <div class="prompt-box">
-                                    <div class="prompt-label">${example.title}</div>
-                                    <div>"${example.prompt}"</div>
+                                    <div style="color: #d0d0d0;">"${example.prompt}"</div>
                                 </div>
                                 <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
                                     <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
@@ -1673,13 +1885,9 @@
             setupGlobalSlider() {
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
-                    this.currentAlpha = value;
-                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
-                    this.updateSliderBackground(e.target.value);
-                    this.updateCurrent();
+                    setGlobalAlpha(value);
                 });
-
-                this.updateSliderBackground(50);
+                this.setAlpha(globalAlpha);
             },
 
             updateSliderBackground(value) {
@@ -1760,6 +1968,16 @@
 
             prevSlide() {
                 this.goToSlide((currentPortraitSlide - 1 + portraitExamples.length) % portraitExamples.length);
+            },
+
+            setAlpha(value) {
+                this.currentAlpha = value;
+                if (this.slider) {
+                    this.slider.value = Math.round(value * 100);
+                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    this.updateSliderBackground(this.slider.value);
+                }
+                this.updateCurrent();
             }
         };
 
@@ -1873,7 +2091,9 @@
             setupHeaderDemo();
             videoCarousel.init();
             imageCarousel.init();
+            referenceCarousel.init();
             portraitCarousel.init();
+            setGlobalAlpha(globalAlpha);
             setupVideoModal();
         });
     </script>
