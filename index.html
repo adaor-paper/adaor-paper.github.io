@@ -252,12 +252,12 @@
             justify-content: space-between;
             margin-top: 10px;
             font-size: 0.9em;
-            color: #666;
+            color: #fff;
         }
 
         .header-demo-caption {
             text-align: center;
-            color: #555;
+            color: #fff;
             font-size: 1em;
             margin-top: 15px;
             font-style: italic;
@@ -265,7 +265,7 @@
 
         .alpha-value {
             font-weight: bold;
-            color: #3498db;
+            color: #fff;
         }
 
         /* Abstract Section */
@@ -538,7 +538,13 @@
             text-align: center;
             font-size: 1.05em;
             font-weight: 500;
-            color: #e0e0e0;
+            color: #fff;
+        }
+
+        .prompt-text {
+            color: inherit;
+            font: inherit;
+            font-weight: 500;
         }
 
         .reference-edit-prompt {
@@ -550,6 +556,8 @@
             max-height: 2.6em;
             overflow: hidden;
             line-height: 1.3;
+            font-size: 0.95em;
+            margin-bottom: 8px;
         }
 
         .portrait-pair-row {
@@ -907,7 +915,7 @@
             <div class="tldr-section">
                 <div class="tldr-title">TL;DR</div>
                 <div class="tldr-content">
-                    We introduce <span class="highlight-text">Adaptive-Origin Guidance (AdaOr)</span>, enabling smooth and continuous control over edit intensity in diffusion-based image and video editing models without requiring per-edit optimization or specialized datasets. Leveraging the Classifier-Free Guidance (CFG) framework, we introduce a learnable identity instruction (<id>) to establish a semantically valid guidance origin, enabling linear interpolation between the input image and the target edit.
+                    We introduce <span class="highlight-text">Adaptive-Origin Guidance (AdaOr)</span>, enabling smooth and continuous control over edit intensity in diffusion-based image and video editing models without requiring per-edit optimization or specialized datasets. Leveraging the Classifier-Free Guidance (CFG) framework, we introduce a learnable identity instruction (&lt;id&gt;) to establish a semantically valid guidance origin, enabling linear interpolation between the input image and the target edit.
                 </div>
             </div>
         </div>
@@ -961,7 +969,7 @@
                 </div>
             </div>
 
-            <div class="method-explanation">
+            <!-- <div class="method-explanation">
                 <p style="margin-bottom: 15px;">
                     <strong>Geometric Interpretation:</strong> In both (a) and (b), we illustrate a single denoising step in which the latent z<sub>t</sub> lies on the manifold of the marginal distribution p<sub>t</sub>. The origin prediction first denoises z<sub>t</sub> toward the manifold of the less noisy distribution p<sub>t-1</sub>, after which the trajectory is steered on this manifold toward better alignment with the conditioning signal.
                 </p>
@@ -971,7 +979,7 @@
                 <p>
                     In <strong>Adaptive Origin Guidance</strong> (b), we interpolate between the identity prediction and the standard null prediction as a function of edit strength. This ensures faithful reconstruction at low strengths while smoothly recovering standard CFG behavior at higher strengths, enabling precise control over manipulation intensity.
                 </p>
-            </div>
+            </div> -->
 
             <p class="method-overview">
                 To enable smooth control over edit strength, we introduce an <strong>identity instruction</strong> — an instruction that corresponds to the identity manipulation, reproducing the input content without any semantic modification. Building on this, we introduce a guidance mechanism where the term that dominates the prediction at low scales (i.e., the origin) is adjusted according to the desired edit strength. Specifically, we interpolate between the identity prediction and the standard unconditional prediction.
@@ -1342,7 +1350,7 @@
                     slide.innerHTML = `
                         <div class="slider-demo-container">
                             <div class="prompt-box">
-                                <div style="color: #d0d0d0;">"${example.prompt}"</div>
+                                <div class="prompt-text">"${example.prompt}"</div>
                             </div>
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
                                 <div style="text-align: center;">
@@ -1531,7 +1539,7 @@
                     slide.innerHTML = `
                         <div class="slider-demo-container">
                             <div class="prompt-box">
-                                <div style="color: #d0d0d0;">"${example.prompt}"</div>
+                                <div class="prompt-text">"${example.prompt}"</div>
                             </div>
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
                                 <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
@@ -1654,7 +1662,7 @@
 
                     const editsHtml = group.edits.map((edit, editIndex) => `
                         <div style="text-align: center; flex: 1; min-width: 240px; max-width: 320px;">
-                            <div class="reference-edit-prompt" style="color: #d0d0d0; font-size: 0.9em; margin-bottom: 8px;">"${edit.prompt}"</div>
+                            <div class="reference-edit-prompt prompt-text">"${edit.prompt}"</div>
                             <img class="reference-edited-${groupIndex}-${editIndex}"
                                  data-reference-edit="true"
                                  data-folder="${encodeURIComponent(edit.folder)}"
@@ -1796,7 +1804,7 @@
                         slide.innerHTML = `
                             <div class="slider-demo-container">
                                 <div class="prompt-box">
-                                    <div style="color: #d0d0d0;">"${example.prompt}"</div>
+                                    <div class="prompt-text">"${example.prompt}"</div>
                                 </div>
                                 <div class="portrait-pair-row">
                                     <div class="portrait-pair-item">
@@ -1850,7 +1858,7 @@
                         slide.innerHTML = `
                             <div class="slider-demo-container">
                                 <div class="prompt-box">
-                                    <div style="color: #d0d0d0;">"${example.prompt}"</div>
+                                    <div class="prompt-text">"${example.prompt}"</div>
                                 </div>
                                 <div class="portrait-pair-row">
                                     <div class="portrait-pair-item">
