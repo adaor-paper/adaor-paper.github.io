@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Continuous Control of Editing Models via Adaptive-Origin Guidance</title>
+    <title>Continuous Control of Editing Models <br/> via Adaptive-Origin Guidance</title>
     
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
     
@@ -847,7 +847,7 @@
     <!-- Header Section -->
     <header class="header">
         <div class="header-content">
-            <h1 class="title">Continuous Control of Editing Models via Adaptive-Origin Guidance</h1>
+            <h1 class="title">Continuous Control of Editing Models <br/> via Adaptive-Origin Guidance</h1>
             
             <!-- Authors (commented out for anonymous submission) -->
             <!--
@@ -907,7 +907,7 @@
             <div class="tldr-section">
                 <div class="tldr-title">TL;DR</div>
                 <div class="tldr-content">
-                    We introduce <span class="highlight-text">Adaptive-Origin Guidance (AdaOr)</span>, enabling smooth and continuous control over edit intensity in diffusion-based image and video editing models without requiring per-edit optimization or specialized datasets.
+                    We introduce <span class="highlight-text">Adaptive-Origin Guidance (AdaOr)</span>, enabling smooth and continuous control over edit intensity in diffusion-based image and video editing models without requiring per-edit optimization or specialized datasets. Leveraging the Classifier-Free Guidance (CFG) framework, we introduce a learnable identity instruction (<id>) to establish a semantically valid guidance origin, enabling linear interpolation between the input image and the target edit.
                 </div>
             </div>
         </div>
@@ -937,7 +937,7 @@
 
             <div class="method-figures">
                 <div class="method-figure">
-                    <img src="assets/method/scheme_a_new.png" alt="Standard CFG">
+                    <img src="assets/method/scheme_a_new.jpg" alt="Standard CFG">
                     <div class="method-figure-title">(a) Standard CFG</div>
                     <div class="method-figure-caption">
                         Null-condition as origin. The origin is given by ε<sub>t</sub>(∅), and the guidance direction is ε<sub>t</sub>(c<sub>T</sub>) - ε<sub>t</sub>(∅).
@@ -945,7 +945,7 @@
                 </div>
 
                 <div class="method-figure">
-                    <img src="assets/method/scheme_b_new.png" alt="Adaptive Origin Guidance">
+                    <img src="assets/method/scheme_b_new.jpg" alt="Adaptive Origin Guidance">
                     <div class="method-figure-title">(b) Adaptive Origin (Ours)</div>
                     <div class="method-figure-caption">
                         Null-identity interpolated origin. The origin is interpolated between the identity prediction ε<sub>t</sub>(REC) and the standard null prediction ε<sub>t</sub>(∅), as a function of the edit strength.
@@ -953,7 +953,7 @@
                 </div>
 
                 <div class="method-figure">
-                    <img src="assets/method/scheme_c_new.png" alt="Edit Progression Comparison">
+                    <img src="assets/method/scheme_c_new.jpg" alt="Edit Progression Comparison">
                     <div class="method-figure-title">(c) Edit Progression Comparison</div>
                     <div class="method-figure-caption">
                         Varying CFG scale vs AdaOr edit strength. Standard CFG originates from arbitrary edits, while AdaOr smoothly transitions from the input image to the target edit.
@@ -1536,7 +1536,7 @@
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
                                 <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #d0d0d0;">Source (α = 0.00)</div>
-                                    <img src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.png"
+                                    <img src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.jpg"
                                          style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
                                 <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
@@ -1544,7 +1544,7 @@
                                     <img class="image-edited-${index}"
                                          data-folder="${encodeURIComponent(example.folder)}"
                                          data-alphas='${JSON.stringify(example.alphaValues)}'
-                                         src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[Math.floor(example.alphaValues.length / 2)]}.png"
+                                         src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[Math.floor(example.alphaValues.length / 2)]}.jpg"
                                          style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
                             </div>
@@ -1591,7 +1591,7 @@
                 
                 if (img && label) {
                     const folder = img.dataset.folder;
-                    img.src = `${imageBasePath}${folder}/alpha/${alphaValue}.png`;
+                    img.src = `${imageBasePath}${folder}/alpha/${alphaValue}.jpg`;
                     label.textContent = alphaValue;
                 }
             },
@@ -1660,7 +1660,7 @@
                                  data-folder="${encodeURIComponent(edit.folder)}"
                                  data-alphas='${JSON.stringify(edit.alphaValues)}'
                                  data-label-class="reference-alpha-label-${groupIndex}-${editIndex}"
-                                 src="${imageBasePath}${encodeURIComponent(edit.folder)}/alpha/${edit.alphaValues[Math.floor(edit.alphaValues.length / 2)]}.png"
+                                 src="${imageBasePath}${encodeURIComponent(edit.folder)}/alpha/${edit.alphaValues[Math.floor(edit.alphaValues.length / 2)]}.jpg"
                                  style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                         </div>
                     `).join('');
@@ -1670,7 +1670,7 @@
                             <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
                                 <div style="text-align: center; width: 100%; max-width: 420px;">
                                     <div style="font-weight: bold; margin-bottom: 10px; color: #d0d0d0;">Source (α = 0.00)</div>
-                                    <img src="${imageBasePath}${encodeURIComponent(group.sourceFolder)}/alpha/0.000.png"
+                                    <img src="${imageBasePath}${encodeURIComponent(group.sourceFolder)}/alpha/0.000.jpg"
                                          style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
                                 <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap; width: 100%;">
@@ -1723,7 +1723,7 @@
                     const folder = item.dataset.folder;
                     const labelClass = item.dataset.labelClass;
                     const label = slide.querySelector(`.${labelClass}`);
-                    item.src = `${imageBasePath}${folder}/alpha/${alphaValue}.png`;
+                    item.src = `${imageBasePath}${folder}/alpha/${alphaValue}.jpg`;
                     if (label) {
                         label.textContent = alphaValue;
                     }
@@ -1789,7 +1789,7 @@
                     const isVideo = example.type === 'video';
                     const slowAttr = example.slowPlayback ? 'data-slow="true"' : '';
                     const basePath = isVideo ? videoBasePath : imageBasePath;
-                    const fileExt = isVideo ? 'mp4' : 'png';
+                    const fileExt = isVideo ? 'mp4' : 'jpg';
                     const midIndex = Math.floor(example.alphaValues.length / 2);
                     
                     if (isVideo) {
@@ -1918,7 +1918,7 @@
                         const isVideo = edited.dataset.type === 'video';
                         const isSlow = edited.dataset.slow === 'true';
                         const basePath = isVideo ? videoBasePath : imageBasePath;
-                        const fileExt = isVideo ? 'mp4' : 'png';
+                        const fileExt = isVideo ? 'mp4' : 'jpg';
 
                         if (isVideo) {
                             const source = document.querySelector(`.portrait-video-source-${index}`);
