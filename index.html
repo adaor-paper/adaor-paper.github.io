@@ -466,18 +466,12 @@
 
         .global-alpha-control {
             max-width: 900px;
-            margin: 30px auto;
-            padding: 25px;
-            background: #2c2c2c;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .global-alpha-control h3 {
-            text-align: center;
-            color: #3498db;
-            margin-bottom: 20px;
-            font-size: 1.2em;
+            margin: 15px auto 0;
+            padding: 0;
+            background: none;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         .global-slider-container {
@@ -826,7 +820,7 @@
             -->
 
             <div class="header-authors">
-                <span class="header-author">Anonymous Writers</span>
+                <span class="header-author">Anonymous Authors</span>
             </div>
             <!-- <div class="header-affiliations">
                 <span class="header-affiliation">SIGGRAPH 2026 Submission ID 399</span>
@@ -840,10 +834,10 @@
                     <span class="icon">📚</span>
                     <span>arXiv (Soon)</span>
                 </a>
-                <a href="#" class="link-btn">
+                <!-- <a href="#" class="link-btn">
                     <span class="icon">🤗</span>
                     <span>HF (Soon)</span>
-                </a>
+                </a> -->
             </div>
 
             <!-- Interactive Demo -->
@@ -876,7 +870,7 @@
 
     <div class="container">
         <!-- Abstract Section -->
-        <section class="abstract-section">
+        <!-- <section class="abstract-section">
             <h2>Abstract</h2>
             <p class="abstract-text">
                 Diffusion-based editing models have emerged as a powerful tool for semantic image and video manipulation. However, existing models lack a mechanism for smoothly controlling the intensity of text-guided edits. In standard text-conditioned generation, Classifier-Free Guidance (CFG) impacts prompt adherence, suggesting it as a potential control for edit intensity in editing models. However, we show that scaling CFG in these models does not produce a smooth transition between the input and the edited result.
@@ -887,7 +881,7 @@
             <p class="abstract-text" style="margin-top: 15px;">
                 By interpolating this identity prediction with the standard unconditional prediction according to the edit strength, we ensure a continuous transition from the input to the edited result. We evaluate our method on image and video editing tasks, demonstrating that it provides smoother and more consistent control compared to current slider-based editing approaches. Our method incorporates an identity instruction into the standard training framework, enabling fine-grained control at inference time without per-edit procedure or reliance on specialized datasets.
             </p>
-        </section>
+        </section> -->
 
         <!-- Method Section -->
         <section class="method-section">
@@ -921,7 +915,7 @@
                     </div>
                 </div>
             </div>
-
+<!-- 
             <div class="method-explanation">
                 <p style="margin-bottom: 15px;">
                     <strong>Geometric Interpretation:</strong> In both (a) and (b), we illustrate a single denoising step in which the latent z<sub>t</sub> lies on the manifold of the marginal distribution p<sub>t</sub>. The origin prediction first denoises z<sub>t</sub> toward the manifold of the less noisy distribution p<sub>t-1</sub>, after which the trajectory is steered on this manifold toward better alignment with the conditioning signal.
@@ -932,14 +926,14 @@
                 <p>
                     In <strong>Adaptive Origin Guidance</strong> (b), we interpolate between the identity prediction and the standard null prediction as a function of edit strength. This ensures faithful reconstruction at low strengths while smoothly recovering standard CFG behavior at higher strengths, enabling precise control over manipulation intensity.
                 </p>
-            </div>
+            </div> -->
 
-            <p class="method-overview">
+            <!-- <p class="method-overview">
                 To enable smooth control over edit strength, we introduce an <strong>identity instruction</strong> — an instruction that corresponds to the identity manipulation, reproducing the input content without any semantic modification. Building on this, we introduce a guidance mechanism where the term that dominates the prediction at low scales (i.e., the origin) is adjusted according to the desired edit strength. Specifically, we interpolate between the identity prediction and the standard unconditional prediction.
             </p>
             <p class="method-overview">
                 By assigning greater weight to the identity term at lower edit strengths and transitioning to the standard term at higher strengths, our method enables smooth, continuous control over manipulation intensity without requiring per-edit optimization or specialized datasets.
-            </p>
+            </p> -->
         </section>
     </div>
 
@@ -963,14 +957,10 @@
             </div>
 
             <div class="global-alpha-control">
-                <h3>Global Edit Intensity Control</h3>
                 <div class="global-slider-container">
                     <span>α = 0.00</span>
                     <input type="range" class="global-slider" id="video-global-slider" min="0" max="100" value="50">
                     <span>α = 1.00</span>
-                </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span class="global-alpha-display" id="video-alpha-display">α = 0.50</span>
                 </div>
             </div>
         </div>
@@ -996,14 +986,10 @@
             </div>
 
             <div class="global-alpha-control">
-                <h3>Global Edit Intensity Control</h3>
                 <div class="global-slider-container">
                     <span>α = 0.00</span>
                     <input type="range" class="global-slider" id="image-global-slider" min="0" max="100" value="50">
                     <span>α = 1.00</span>
-                </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span class="global-alpha-display" id="image-alpha-display">α = 0.50</span>
                 </div>
             </div>
         </div>
@@ -1029,14 +1015,13 @@
             </div>
 
             <div class="global-alpha-control">
-                <h3>Global Edit Intensity Control</h3>
                 <div class="global-slider-container">
                     <span>α = 0.00</span>
                     <input type="range" class="global-slider" id="reference-global-slider" min="0" max="100" value="50">
                     <span>α = 1.00</span>
                 </div>
                 <div style="text-align: center; margin-top: 15px;">
-                    <span class="global-alpha-display" id="reference-alpha-display">α = 0.50</span>
+                    <span class="global-alpha-display" id="reference-alpha-display">α = 0.5</span>
                 </div>
             </div>
         </div>
@@ -1062,14 +1047,10 @@
             </div>
 
             <div class="global-alpha-control">
-                <h3>Global Edit Intensity Control</h3>
                 <div class="global-slider-container">
                     <span>α = 0.00</span>
                     <input type="range" class="global-slider" id="portrait-global-slider" min="0" max="100" value="50">
                     <span>α = 1.00</span>
-                </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span class="global-alpha-display" id="portrait-alpha-display">α = 0.50</span>
                 </div>
             </div>
         </div>
@@ -1492,7 +1473,9 @@
                 this.currentAlpha = value;
                 if (this.slider) {
                     this.slider.value = Math.round(value * 100);
-                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    if (this.alphaDisplay) {
+                        this.alphaDisplay.textContent = `α = ${value.toFixed(1)}`;
+                    }
                     this.updateSliderBackground(this.slider.value);
                 }
                 this.updateCurrentVideo();
@@ -1614,7 +1597,9 @@
                 this.currentAlpha = value;
                 if (this.slider) {
                     this.slider.value = Math.round(value * 100);
-                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    if (this.alphaDisplay) {
+                        this.alphaDisplay.textContent = value.toFixed(2);
+                    }
                     this.updateSliderBackground(this.slider.value);
                 }
                 this.updateCurrentImage();
@@ -1748,7 +1733,9 @@
                 this.currentAlpha = value;
                 if (this.slider) {
                     this.slider.value = Math.round(value * 100);
-                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    if (this.alphaDisplay) {
+                        this.alphaDisplay.textContent = value.toFixed(2);
+                    }
                     this.updateSliderBackground(this.slider.value);
                 }
                 this.updateCurrentReference();
@@ -1974,7 +1961,9 @@
                 this.currentAlpha = value;
                 if (this.slider) {
                     this.slider.value = Math.round(value * 100);
-                    this.alphaDisplay.textContent = `α = ${value.toFixed(2)}`;
+                    if (this.alphaDisplay) {
+                        this.alphaDisplay.textContent = value.toFixed(2);
+                    }
                     this.updateSliderBackground(this.slider.value);
                 }
                 this.updateCurrent();
