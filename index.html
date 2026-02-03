@@ -365,15 +365,15 @@
 
         /* Results Section */
         .results-section {
-            margin: 60px 0;
-            padding: 40px 20px;
+            margin: 30px 0;
+            padding: 20px 20px;
             background: transparent;
         }
 
         .results-section h2 {
             font-size: 2em;
             font-weight: 600;
-            margin-bottom: 30px;
+            margin-bottom: 16px;
             color: #3498db;
             text-align: center;
             border-bottom: 3px solid #3498db;
@@ -386,7 +386,7 @@
         .section-description {
             text-align: center;
             max-width: 800px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 20px auto;
             color: #b0b0b0;
             font-size: 1.05em;
         }
@@ -411,6 +411,10 @@
         .carousel-slide {
             min-width: 100%;
             box-sizing: border-box;
+        }
+
+        #portrait-carousel .carousel-slide {
+            min-width: 50%;
         }
 
         .carousel-nav {
@@ -527,11 +531,39 @@
         }
 
         .prompt-box {
-            background: #2c2c2c;
-            border-left: 4px solid #3498db;
-            padding: 15px 20px;
-            margin: 15px 0;
-            border-radius: 0 8px 8px 0;
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 10px 0 20px 0;
+            text-align: center;
+            font-size: 1.05em;
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+
+        .reference-edit-prompt {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 2.6em;
+            max-height: 2.6em;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+
+        .portrait-pair-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .portrait-pair-item {
+            text-align: center;
+            flex: 1 1 0;
+            min-width: 0;
         }
 
         .prompt-label {
@@ -622,9 +654,22 @@
         }
 
         .image-item .prompt-box {
-            height: 100px;
-            overflow: hidden;
+            height: auto;
+            overflow: visible;
             margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .shared-reference-section .slider-demo-container {
+            margin-bottom: 20px;
+        }
+
+        .shared-reference-section .carousel-indicators {
+            margin: 10px 0;
+        }
+
+        .shared-reference-section .global-alpha-control {
+            margin-top: 8px;
         }
 
         .image-item .image-pair {
@@ -915,7 +960,7 @@
                     </div>
                 </div>
             </div>
-<!-- 
+
             <div class="method-explanation">
                 <p style="margin-bottom: 15px;">
                     <strong>Geometric Interpretation:</strong> In both (a) and (b), we illustrate a single denoising step in which the latent z<sub>t</sub> lies on the manifold of the marginal distribution p<sub>t</sub>. The origin prediction first denoises z<sub>t</sub> toward the manifold of the less noisy distribution p<sub>t-1</sub>, after which the trajectory is steered on this manifold toward better alignment with the conditioning signal.
@@ -926,24 +971,21 @@
                 <p>
                     In <strong>Adaptive Origin Guidance</strong> (b), we interpolate between the identity prediction and the standard null prediction as a function of edit strength. This ensures faithful reconstruction at low strengths while smoothly recovering standard CFG behavior at higher strengths, enabling precise control over manipulation intensity.
                 </p>
-            </div> -->
+            </div>
 
-            <!-- <p class="method-overview">
+            <p class="method-overview">
                 To enable smooth control over edit strength, we introduce an <strong>identity instruction</strong> — an instruction that corresponds to the identity manipulation, reproducing the input content without any semantic modification. Building on this, we introduce a guidance mechanism where the term that dominates the prediction at low scales (i.e., the origin) is adjusted according to the desired edit strength. Specifically, we interpolate between the identity prediction and the standard unconditional prediction.
             </p>
             <p class="method-overview">
                 By assigning greater weight to the identity term at lower edit strengths and transitioning to the standard term at higher strengths, our method enables smooth, continuous control over manipulation intensity without requiring per-edit optimization or specialized datasets.
-            </p> -->
+            </p>
         </section>
     </div>
 
     <!-- Video Results Section -->
     <section class="results-section">
         <div class="container">
-            <h2>Video Editing Results</h2>
-            <p class="section-description">
-                Use the arrows to navigate between examples. Adjust the slider to control edit intensity across all videos.
-            </p>
+            <h2>Results</h2>
 
             <div class="carousel-container">
                 <div class="carousel-wrapper">
@@ -969,10 +1011,7 @@
     <!-- Image Results Section -->
     <section class="results-section">
         <div class="container">
-            <h2>Image Editing Results</h2>
-            <p class="section-description">
-                Use the arrows to navigate between examples. Adjust the slider to control edit intensity.
-            </p>
+            <h2></h2>
 
             <div class="carousel-container">
                 <div class="carousel-wrapper">
@@ -996,12 +1035,9 @@
     </section>
 
     <!-- Shared Reference Results Section -->
-    <section class="results-section">
+    <section class="results-section shared-reference-section">
         <div class="container">
-            <h2>Shared Reference Image Results</h2>
-            <p class="section-description">
-                Examples that share the same reference image. Adjust the slider to control edit intensity.
-            </p>
+            <h2></h2>
 
             <div class="carousel-container">
                 <div class="carousel-wrapper">
@@ -1030,10 +1066,7 @@
     <!-- Portrait Format Results Section -->
     <section class="results-section">
         <div class="container">
-            <h2>Additional Results - Portrait Format</h2>
-            <p class="section-description">
-                Examples with different aspect ratios. Use the arrows to navigate and adjust the slider to control edit intensity.
-            </p>
+            <h2></h2>
 
             <div class="carousel-container">
                 <div class="carousel-wrapper">
@@ -1179,7 +1212,7 @@
         const referenceGroups = [
             {
                 title: "Dog Reference",
-                description: "All edits share the same dog source image.",
+                description: "",
                 sourceFolder: "dog_to_tiger_good",
                 edits: [
                     {
@@ -1281,16 +1314,6 @@
         // Combine all videos
         const allVideos = [...interactiveVideos, ...otherVideos];
 
-        let globalAlpha = 0.5;
-
-        function setGlobalAlpha(value) {
-            globalAlpha = value;
-            videoCarousel.setAlpha(value);
-            imageCarousel.setAlpha(value);
-            referenceCarousel.setAlpha(value);
-            portraitCarousel.setAlpha(value);
-        }
-
         // Video Carousel
         let currentVideoSlide = 0;
         const videoCarousel = {
@@ -1323,7 +1346,7 @@
                             </div>
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
                                 <div style="text-align: center;">
-                                    <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
+                                    <div style="font-weight: bold; margin-bottom: 10px; color: #d0d0d0;">Source (α = 0.00)</div>
                                     <video autoplay loop muted playsinline ${slowAttr}
                                            class="video-source-${index}"
                                            data-slow="${example.slowPlayback || false}"
@@ -1389,9 +1412,9 @@
             setupGlobalSlider() {
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
-                    setGlobalAlpha(value);
+                    this.setAlpha(value);
                 });
-                this.setAlpha(globalAlpha);
+                this.setAlpha(this.currentAlpha);
             },
 
             updateSliderBackground(value) {
@@ -1512,7 +1535,7 @@
                             </div>
                             <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
                                 <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
-                                    <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
+                                    <div style="font-weight: bold; margin-bottom: 10px; color: #d0d0d0;">Source (α = 0.00)</div>
                                     <img src="${imageBasePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.png"
                                          style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
@@ -1549,9 +1572,9 @@
             setupGlobalSlider() {
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
-                    setGlobalAlpha(value);
+                    this.setAlpha(value);
                 });
-                this.setAlpha(globalAlpha);
+                this.setAlpha(this.currentAlpha);
             },
 
             updateSliderBackground(value) {
@@ -1631,7 +1654,7 @@
 
                     const editsHtml = group.edits.map((edit, editIndex) => `
                         <div style="text-align: center; flex: 1; min-width: 240px; max-width: 320px;">
-                            <div style="color: #d0d0d0; font-size: 0.9em; margin-bottom: 8px;">"${edit.prompt}"</div>
+                            <div class="reference-edit-prompt" style="color: #d0d0d0; font-size: 0.9em; margin-bottom: 8px;">"${edit.prompt}"</div>
                             <img class="reference-edited-${groupIndex}-${editIndex}"
                                  data-reference-edit="true"
                                  data-folder="${encodeURIComponent(edit.folder)}"
@@ -1644,12 +1667,9 @@
 
                     slide.innerHTML = `
                         <div class="slider-demo-container">
-                            <div class="prompt-box">
-                                <div style="color: #d0d0d0;">${group.description}</div>
-                            </div>
                             <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
                                 <div style="text-align: center; width: 100%; max-width: 420px;">
-                                    <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
+                                    <div style="font-weight: bold; margin-bottom: 10px; color: #d0d0d0;">Source (α = 0.00)</div>
                                     <img src="${imageBasePath}${encodeURIComponent(group.sourceFolder)}/alpha/0.000.png"
                                          style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
@@ -1680,10 +1700,10 @@
             setupGlobalSlider() {
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
-                    setGlobalAlpha(value);
+                    this.setAlpha(value);
                 });
 
-                this.setAlpha(globalAlpha);
+                this.setAlpha(this.currentAlpha);
             },
 
             updateSliderBackground(value) {
@@ -1749,6 +1769,7 @@
             slider: null,
             alphaDisplay: null,
             currentAlpha: 0.5,
+            visibleCount: 2,
 
             init() {
                 this.container = document.getElementById('portrait-carousel');
@@ -1777,16 +1798,16 @@
                                 <div class="prompt-box">
                                     <div style="color: #d0d0d0;">"${example.prompt}"</div>
                                 </div>
-                                <div style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                                    <div style="text-align: center;">
-                                        <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
+                                <div class="portrait-pair-row">
+                                    <div class="portrait-pair-item">
+                                        <div style="font-weight: bold; margin-bottom: 10px; color: #d0d0d0;">Source (α = 0.00)</div>
                                         <video autoplay loop muted playsinline ${slowAttr}
                                                class="portrait-video-source-${index}"
                                                data-slow="${example.slowPlayback || false}"
                                                style="max-width: 400px; width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
                                                src="${basePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.${fileExt}"></video>
                                     </div>
-                                    <div style="text-align: center;">
+                                    <div class="portrait-pair-item">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="portrait-alpha-label-${index}">0.50</span>)</div>
                                         <video autoplay loop muted playsinline ${slowAttr}
                                                class="portrait-edited-${index}"
@@ -1831,13 +1852,13 @@
                                 <div class="prompt-box">
                                     <div style="color: #d0d0d0;">"${example.prompt}"</div>
                                 </div>
-                                <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
-                                    <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
-                                        <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">Source (α = 0.00)</div>
+                                <div class="portrait-pair-row">
+                                    <div class="portrait-pair-item">
+                                        <div style="font-weight: bold; margin-bottom: 10px; color: #d0d0d0;">Source (α = 0.00)</div>
                                         <img src="${basePath}${encodeURIComponent(example.folder)}/alpha/${example.alphaValues[0]}.${fileExt}"
                                              style="width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                     </div>
-                                    <div style="text-align: center; flex: 1; min-width: 300px; max-width: 500px;">
+                                    <div class="portrait-pair-item">
                                         <div style="font-weight: bold; margin-bottom: 10px; color: #3498db;">Edited (α = <span class="portrait-alpha-label-${index}">0.57</span>)</div>
                                         <img class="portrait-edited-${index}"
                                              data-folder="${encodeURIComponent(example.folder)}"
@@ -1854,14 +1875,15 @@
                     this.container.appendChild(slide);
                 });
 
-                // Create indicators
+                // Create indicators (one per position)
                 const indicators = document.getElementById('portrait-indicators');
-                portraitExamples.forEach((_, index) => {
+                const maxIndex = Math.max(0, portraitExamples.length - this.visibleCount);
+                for (let index = 0; index <= maxIndex; index += 1) {
                     const dot = document.createElement('span');
                     dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
                     dot.onclick = () => this.goToSlide(index);
                     indicators.appendChild(dot);
-                });
+                }
             },
 
             setupNavigation() {
@@ -1872,9 +1894,9 @@
             setupGlobalSlider() {
                 this.slider.addEventListener('input', (e) => {
                     const value = e.target.value / 100;
-                    setGlobalAlpha(value);
+                    this.setAlpha(value);
                 });
-                this.setAlpha(globalAlpha);
+                this.setAlpha(this.currentAlpha);
             },
 
             updateSliderBackground(value) {
@@ -1882,79 +1904,94 @@
             },
 
             updateCurrent() {
-                const example = portraitExamples[currentPortraitSlide];
-                const alphaIndex = Math.round(this.currentAlpha * (example.alphaValues.length - 1));
-                const alphaValue = example.alphaValues[alphaIndex];
-                
-                const edited = document.querySelector(`.portrait-edited-${currentPortraitSlide}`);
-                const label = document.querySelector(`.portrait-alpha-label-${currentPortraitSlide}`);
-                
-                if (edited && label) {
-                    const folder = edited.dataset.folder;
-                    const isVideo = edited.dataset.type === 'video';
-                    const isSlow = edited.dataset.slow === 'true';
-                    const basePath = isVideo ? videoBasePath : imageBasePath;
-                    const fileExt = isVideo ? 'mp4' : 'png';
-                    
-                    if (isVideo) {
-                        const source = document.querySelector(`.portrait-video-source-${currentPortraitSlide}`);
-                        edited.src = `${basePath}${folder}/alpha/${alphaValue}.${fileExt}`;
-                        label.textContent = alphaValue;
-                        
-                        edited.addEventListener('loadeddata', () => {
-                            if (isSlow) {
-                                edited.playbackRate = 0.333;
-                            }
-                            edited.currentTime = 0;
-                            edited.play();
-                            
-                            if (source) {
+                const updateAtIndex = (index) => {
+                    const example = portraitExamples[index];
+                    if (!example) return;
+                    const alphaIndex = Math.round(this.currentAlpha * (example.alphaValues.length - 1));
+                    const alphaValue = example.alphaValues[alphaIndex];
+
+                    const edited = document.querySelector(`.portrait-edited-${index}`);
+                    const label = document.querySelector(`.portrait-alpha-label-${index}`);
+
+                    if (edited && label) {
+                        const folder = edited.dataset.folder;
+                        const isVideo = edited.dataset.type === 'video';
+                        const isSlow = edited.dataset.slow === 'true';
+                        const basePath = isVideo ? videoBasePath : imageBasePath;
+                        const fileExt = isVideo ? 'mp4' : 'png';
+
+                        if (isVideo) {
+                            const source = document.querySelector(`.portrait-video-source-${index}`);
+                            edited.src = `${basePath}${folder}/alpha/${alphaValue}.${fileExt}`;
+                            label.textContent = alphaValue;
+
+                            edited.addEventListener('loadeddata', () => {
                                 if (isSlow) {
-                                    source.playbackRate = 0.333;
+                                    edited.playbackRate = 0.333;
                                 }
-                                source.currentTime = 0;
-                                source.play();
-                            }
-                        }, { once: true });
-                    } else {
-                        edited.src = `${basePath}${folder}/alpha/${alphaValue}.${fileExt}`;
-                        label.textContent = alphaValue;
+                                edited.currentTime = 0;
+                                edited.play();
+
+                                if (source) {
+                                    if (isSlow) {
+                                        source.playbackRate = 0.333;
+                                    }
+                                    source.currentTime = 0;
+                                    source.play();
+                                }
+                            }, { once: true });
+                        } else {
+                            edited.src = `${basePath}${folder}/alpha/${alphaValue}.${fileExt}`;
+                            label.textContent = alphaValue;
+                        }
                     }
-                }
+                };
+
+                updateAtIndex(currentPortraitSlide);
+                updateAtIndex(currentPortraitSlide + 1);
             },
 
             goToSlide(index) {
-                currentPortraitSlide = index;
-                this.container.style.transform = `translateX(-${index * 100}%)`;
+                const maxIndex = Math.max(0, portraitExamples.length - this.visibleCount);
+                const normalizedIndex = ((index % (maxIndex + 1)) + (maxIndex + 1)) % (maxIndex + 1);
+                currentPortraitSlide = normalizedIndex;
+                const slideWidth = 100 / this.visibleCount;
+                this.container.style.transform = `translateX(-${normalizedIndex * slideWidth}%)`;
                 
                 document.querySelectorAll('#portrait-indicators .carousel-dot').forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
+                    dot.classList.toggle('active', i === normalizedIndex);
                 });
 
-                const currentSlide = this.container.children[index];
-                const example = portraitExamples[index];
-                
-                if (currentSlide && example.type === 'video') {
-                    const isSlow = example.slowPlayback || false;
-                    const videos = currentSlide.querySelectorAll('video');
-                    videos.forEach(v => {
-                        if (isSlow) {
-                            v.playbackRate = 0.333;
-                        }
-                        v.currentTime = 0;
-                        v.play();
-                    });
-                }
+                const restartVideoAtIndex = (slideIndex) => {
+                    const currentSlide = this.container.children[slideIndex];
+                    const example = portraitExamples[slideIndex];
+                    if (currentSlide && example && example.type === 'video') {
+                        const isSlow = example.slowPlayback || false;
+                        const videos = currentSlide.querySelectorAll('video');
+                        videos.forEach(v => {
+                            if (isSlow) {
+                                v.playbackRate = 0.333;
+                            }
+                            v.currentTime = 0;
+                            v.play();
+                        });
+                    }
+                };
+
+                restartVideoAtIndex(currentPortraitSlide);
+                restartVideoAtIndex(currentPortraitSlide + 1);
 
                 this.updateCurrent();
             },
 
             nextSlide() {
-                this.goToSlide((currentPortraitSlide + 1) % portraitExamples.length);
+                const maxIndex = Math.max(0, portraitExamples.length - this.visibleCount);
+                this.goToSlide((currentPortraitSlide + 1) % (maxIndex + 1));
             },
 
             prevSlide() {
-                this.goToSlide((currentPortraitSlide - 1 + portraitExamples.length) % portraitExamples.length);
+                const maxIndex = Math.max(0, portraitExamples.length - this.visibleCount);
+                this.goToSlide((currentPortraitSlide - 1 + (maxIndex + 1)) % (maxIndex + 1));
             },
 
             setAlpha(value) {
@@ -2082,7 +2119,6 @@
             imageCarousel.init();
             referenceCarousel.init();
             portraitCarousel.init();
-            setGlobalAlpha(globalAlpha);
             setupVideoModal();
         });
     </script>
